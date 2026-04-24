@@ -73,9 +73,11 @@
                         @elseif($b->status == 'terkonfirmasi')
                             <span class="badge badge-success">✓ Terkonfirmasi</span>
                         @elseif($b->status == 'selesai')
-                            <span class="badge badge-info">Selesai</span>
+                            <span class="badge badge-info">✔ Selesai</span>
                         @elseif($b->status == 'dibatalkan')
                             <span class="badge badge-danger">✕ Dibatalkan</span>
+                        @elseif($b->status == 'kadaluwarsa')
+                            <span class="badge badge-neutral">🕐 Kadaluwarsa</span>
                         @else
                             <span class="badge badge-info">{{ ucfirst($b->status) }}</span>
                         @endif
@@ -89,8 +91,10 @@
                                 ✓ Setujui
                             </button>
                         </form>
+                        @elseif($b->status == 'kadaluwarsa')
+                        <span style="font-size:11px; color:var(--text-light); font-style:italic;">🕐 Sudah terlewat</span>
                         @else
-                        <span style="font-size:12px; color:var(--text-muted);">Tidak ada aksi</span>
+                        <span style="font-size:12px; color:var(--text-muted);">—</span>
                         @endif
                     </td>
                 </tr>

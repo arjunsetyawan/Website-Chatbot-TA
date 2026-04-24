@@ -110,6 +110,135 @@ class PasienController extends Controller
     }
 
     // ═══════════════════════════════════════════════════════════════
+    //   DASHBOARD
+    // ═══════════════════════════════════════════════════════════════
+    public function dashboard()
+    {
+        $user = auth()->user();
+        $now  = Carbon::now('Asia/Jakarta');
+
+        // Booking mendatang: tanggal > hari ini ATAU tanggal hari ini & jam booking belum lewat
+        $bookingMendatang = Konsultasi::where('user_id', $user->id)
+            ->whereIn('status', ['menunggu', 'terkonfirmasi'])
+            ->where(function ($q) use ($now) {
+                $q->where('tanggal_konsultasi', '>', $now->toDateString())
+                  ->orWhere(function ($q2) use ($now) {
+                      $q2->where('tanggal_konsultasi', $now->toDateString())
+                         ->where('jam_booking', '>=', $now->format('H:i'));
+                  });
+            })
+            ->orderBy('tanggal_konsultasi')
+            ->orderBy('jam_booking')
+            ->limit(3)
+            ->get();
+
+        // Hitung statistik
+        $totalKonsultasi  = Konsultasi::where('user_id', $user->id)->count();
+        $bookingTerjadwal = Konsultasi::where('user_id', $user->id)
+            ->whereIn('status', ['menunggu', 'terkonfirmasi'])
+            ->where(function ($q) use ($now) {
+                $q->where('tanggal_konsultasi', '>', $now->toDateString())
+                  ->orWhere(function ($q2) use ($now) {
+                      $q2->where('tanggal_konsultasi', $now->toDateString())
+                         ->where('jam_booking', '>=', $now->format('H:i'));
+                  });
+            })
+            ->count();
+
+        return view('pasien.dashboard', compact(
+            'user',
+            'bookingMendatang',
+            'totalKonsultasi',
+            'bookingTerjadwal',
+        ));
+    }
+
+    // ═══════════════════════════════════════════════════════════════
+    //   INFORMASI RUMAH SAKIT
+    // ═══════════════════════════════════════════════════════════════
+    public function informasiRs()
+    {
+        return view('pasien.informasi-rs');
+    }
+
+    // ═══════════════════════════════════════════════════════════════
+    //   KONSULTASI CHATBOT
+    // ═══════════════════════════════════════════════════════════════
+    public function konsultasiChatbot()
+    {
+        $user = auth()->user();
+        return view('pasien.konsultasi-chatbot', compact('user'));
+    }
+
+    // ═══════════════════════════════════════════════════════════════
+    //   FAQ
+    // ═══════════════════════════════════════════════════════════════
+    public function faq()
+    {
+        return view('pasien.faq');
+    }
+
+    // ═══════════════════════════════════════════════════════════════
+    //   PROFIL
+    // ═══════════════════════════════════════════════════════════════
+    public function profil()
+    {
+        $user   = auth()->user();
+        $pasien = $user->pasien; // nullable — bisa null jika belum diisi
+        return view('pasien.profil', compact('user', 'pasien'));
+    }
+
+    public function profilUpdate(Request $request)
+    {
+        $user = auth()->user();
+
+        $request->validate([
+            'name'          => 'required|string|max:100',
+            'email'         => 'required|email|unique:users,email,' . $user->id,
+            'nik'           => 'required|digits:16|unique:pasiens,nik,' . ($user->pasien_id ?? 'NULL') . ',id',
+            'alamat'        => 'required|string|max:500',
+            'jenis_kelamin' => 'required|in:LAKI-LAKI,PEREMPUAN',
+            'keluhan_utama' => 'nullable|string|max:500',
+        ], [
+            'name.required'          => 'Nama lengkap wajib diisi.',
+            'email.required'         => 'Email wajib diisi.',
+            'email.unique'           => 'Email sudah digunakan oleh akun lain.',
+            'nik.required'           => 'NIK wajib diisi.',
+            'nik.digits'             => 'NIK harus 16 digit angka.',
+            'nik.unique'             => 'NIK sudah terdaftar pada pasien lain.',
+            'alamat.required'        => 'Alamat wajib diisi.',
+            'jenis_kelamin.required' => 'Jenis kelamin wajib dipilih.',
+        ]);
+
+        // Update nama & email di tabel users
+        $user->update([
+            'name'  => $request->name,
+            'email' => $request->email,
+        ]);
+
+        // Upsert tabel pasiens — no_rekam_medis & no_registrasi dikelola oleh admin, tidak diubah di sini
+        $pasienData = [
+            'nik'           => $request->nik,
+            'nama'          => $request->name,
+            'alamat'        => $request->alamat,
+            'jenis_kelamin' => $request->jenis_kelamin,
+            'keluhan_utama' => $request->keluhan_utama ?: null,
+        ];
+
+        if ($user->pasien) {
+            // Update pasien yang sudah ada
+            $user->pasien->update($pasienData);
+        } else {
+            // Buat pasien baru dan hubungkan ke user
+            $pasien = \App\Models\Pasien::create($pasienData);
+            $user->update(['pasien_id' => $pasien->id]);
+        }
+
+        return redirect()->route('pasien.profil')
+                         ->with('success', 'Profil berhasil disimpan!');
+    }
+
+    // ═══════════════════════════════════════════════════════════════
     //   JADWAL DOKTER
     // ═══════════════════════════════════════════════════════════════
     public function jadwalDokter(Request $request)
@@ -130,8 +259,9 @@ class PasienController extends Controller
     public function bookingIndex(Request $request)
     {
         $user = auth()->user();
-        $selectedDate = $request->input('date', Carbon::now('Asia/Jakarta')->format('Y-m-d'));
-        $today = Carbon::now('Asia/Jakarta')->format('Y-m-d');
+        $now  = Carbon::now('Asia/Jakarta');
+        $selectedDate = $request->input('date', $now->format('Y-m-d'));
+        $today = $now->format('Y-m-d');
 
         // Validate: cannot book in the past
         if (Carbon::parse($selectedDate)->lt(Carbon::parse($today))) {
@@ -163,14 +293,35 @@ class PasienController extends Controller
             ->orderByDesc('created_at')
             ->get();
 
-        $bookingMendatang = $bookings->filter(function ($b) {
-            return $b->tanggal_konsultasi->gte(Carbon::today('Asia/Jakarta'))
-                && in_array($b->status, ['menunggu', 'terkonfirmasi']);
+        $bookingMendatang = $bookings->filter(function ($b) use ($now) {
+            if (!in_array($b->status, ['menunggu', 'terkonfirmasi'])) return false;
+
+            // Tanggal mendatang → selalu tampil
+            if ($b->tanggal_konsultasi->gt(Carbon::today('Asia/Jakarta'))) return true;
+
+            // Hari ini → cek apakah jam booking belum lewat
+            if ($b->tanggal_konsultasi->eq(Carbon::today('Asia/Jakarta'))) {
+                $jamBooking = $b->jam_booking ?? '00:00';
+                return $jamBooking >= $now->format('H:i');
+            }
+
+            return false;
         });
 
-        $bookingSelesai = $bookings->filter(function ($b) {
-            return $b->tanggal_konsultasi->lt(Carbon::today('Asia/Jakarta'))
-                || in_array($b->status, ['selesai', 'dibatalkan']);
+        $bookingSelesai = $bookings->filter(function ($b) use ($now) {
+            // Sudah selesai atau dibatalkan
+            if (in_array($b->status, ['selesai', 'dibatalkan'])) return true;
+
+            // Tanggal sudah lewat
+            if ($b->tanggal_konsultasi->lt(Carbon::today('Asia/Jakarta'))) return true;
+
+            // Hari ini tapi jam sudah lewat
+            if ($b->tanggal_konsultasi->eq(Carbon::today('Asia/Jakarta'))) {
+                $jamBooking = $b->jam_booking ?? '00:00';
+                return $jamBooking < $now->format('H:i');
+            }
+
+            return false;
         });
 
         return view('pasien.booking', compact(

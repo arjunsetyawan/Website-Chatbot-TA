@@ -29,11 +29,14 @@ Route::post('/logout', [AuthController::class, 'logout'])
 
 // ─── PASIEN ROUTES (harus login + role pasien) ─────────────────────────────
 Route::middleware(['auth', 'role:pasien'])->group(function () {
-    Route::get('/', function () {
-        return view('pasien.dashboard');
-    })->name('pasien.dashboard');
+    Route::get('/', [PasienController::class, 'dashboard'])->name('pasien.dashboard');
 
+    Route::get('/konsultasi-chatbot', [PasienController::class, 'konsultasiChatbot'])->name('pasien.konsultasi-chatbot');
     Route::get('/jadwal-dokter', [PasienController::class, 'jadwalDokter'])->name('pasien.jadwal-dokter');
+    Route::get('/informasi-rs', [PasienController::class, 'informasiRs'])->name('pasien.informasi-rs');
+    Route::get('/faq', [PasienController::class, 'faq'])->name('pasien.faq');
+    Route::get('/profil', [PasienController::class, 'profil'])->name('pasien.profil');
+    Route::post('/profil', [PasienController::class, 'profilUpdate'])->name('pasien.profil.update');
 
     // Booking Konsultasi
     Route::get('/booking', [PasienController::class, 'bookingIndex'])->name('pasien.booking.index');

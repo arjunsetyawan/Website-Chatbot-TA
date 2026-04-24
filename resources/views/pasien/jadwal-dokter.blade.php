@@ -9,306 +9,12 @@
         href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=DM+Serif+Display:ital@0;1&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="/css/style.css">
-    <style>
-        /* ── PAGE-SPECIFIC STYLES ── */
-        .jadwal-hero {
-            background: linear-gradient(135deg, #0a2540 0%, #1a4a80 60%, #2d7dd2 100%);
-            border-radius: 20px;
-            padding: 36px 40px;
-            margin-bottom: 24px;
-            position: relative;
-            overflow: hidden;
-        }
-        .jadwal-hero::before {
-            content: '';
-            position: absolute;
-            top: -50px; right: -50px;
-            width: 220px; height: 220px;
-            border-radius: 50%;
-            background: rgba(255,255,255,.06);
-        }
-        .jadwal-hero::after {
-            content: '';
-            position: absolute;
-            bottom: -70px; right: 140px;
-            width: 160px; height: 160px;
-            border-radius: 50%;
-            background: rgba(255,255,255,.04);
-        }
-        .jadwal-hero h1 {
-            font-family: 'DM Serif Display', serif;
-            font-size: 26px;
-            color: #fff;
-            margin-bottom: 8px;
-        }
-        .jadwal-hero p {
-            font-size: 13.5px;
-            color: rgba(255,255,255,.65);
-            max-width: 520px;
-            line-height: 1.6;
-        }
-        .jadwal-hero .hero-row {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            position: relative;
-            z-index: 1;
-        }
-        .hero-stats {
-            display: flex;
-            gap: 16px;
-        }
-        .hero-stat {
-            background: rgba(255,255,255,.1);
-            border: 1px solid rgba(255,255,255,.15);
-            border-radius: 14px;
-            padding: 14px 20px;
-            text-align: center;
-            min-width: 100px;
-            backdrop-filter: blur(6px);
-        }
-        .hero-stat .hs-val {
-            font-size: 26px;
-            font-weight: 700;
-            color: #fff;
-            line-height: 1;
-        }
-        .hero-stat .hs-label {
-            font-size: 10.5px;
-            color: rgba(255,255,255,.55);
-            margin-top: 4px;
-            font-weight: 500;
-        }
-
-        /* Date Filter */
-        .filter-bar {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            margin-bottom: 24px;
-        }
-        .filter-bar label {
-            font-size: 13px;
-            font-weight: 600;
-            color: var(--text);
-        }
-        .filter-bar input[type="date"] {
-            height: 40px;
-            border: 1.5px solid var(--border);
-            border-radius: 10px;
-            padding: 0 14px;
-            font-size: 13px;
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            color: var(--text);
-            outline: none;
-            background: var(--white);
-            transition: border-color .2s;
-        }
-        .filter-bar input[type="date"]:focus {
-            border-color: var(--accent);
-        }
-        .filter-today {
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            font-size: 11px;
-            font-weight: 600;
-            color: var(--accent);
-            background: rgba(45,125,210,.08);
-            padding: 6px 12px;
-            border-radius: 8px;
-            border: none;
-            cursor: pointer;
-            transition: background .2s;
-            font-family: 'Plus Jakarta Sans', sans-serif;
-        }
-        .filter-today:hover { background: rgba(45,125,210,.15); }
-
-        /* Doctor Cards */
-        .dokter-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-            gap: 16px;
-            margin-bottom: 24px;
-        }
-        .dokter-card {
-            background: var(--card);
-            border: 1.5px solid var(--border);
-            border-radius: 16px;
-            padding: 22px 24px;
-            transition: all .25s ease;
-            position: relative;
-            overflow: hidden;
-        }
-        .dokter-card:hover {
-            border-color: var(--accent);
-            transform: translateY(-3px);
-            box-shadow: 0 12px 32px rgba(10,37,64,.1);
-        }
-        .dokter-card::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0;
-            width: 4px;
-            height: 100%;
-            background: linear-gradient(180deg, var(--accent) 0%, var(--accent2) 100%);
-            border-radius: 4px 0 0 4px;
-        }
-        .dc-header {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            margin-bottom: 16px;
-        }
-        .dc-avatar {
-            width: 48px; height: 48px;
-            border-radius: 14px;
-            background: linear-gradient(135deg, var(--accent), var(--accent2));
-            display: flex; align-items: center; justify-content: center;
-            font-size: 22px;
-            flex-shrink: 0;
-            box-shadow: 0 4px 12px rgba(45,125,210,.25);
-        }
-        .dc-name {
-            font-size: 14.5px;
-            font-weight: 700;
-            color: var(--text);
-            line-height: 1.3;
-        }
-        .dc-poli {
-            font-size: 11.5px;
-            color: var(--accent);
-            font-weight: 600;
-            margin-top: 2px;
-        }
-        .dc-details {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-        .dc-row {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 10px 14px;
-            background: var(--bg);
-            border-radius: 10px;
-        }
-        .dc-row-icon {
-            font-size: 17px;
-            width: 22px;
-            text-align: center;
-            flex-shrink: 0;
-        }
-        .dc-row-info {
-            flex: 1;
-        }
-        .dc-row-label {
-            font-size: 10px;
-            color: var(--text-muted);
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: .5px;
-        }
-        .dc-row-val {
-            font-size: 13px;
-            font-weight: 600;
-            color: var(--text);
-            margin-top: 1px;
-        }
-        .dc-status {
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            font-size: 11px;
-            font-weight: 600;
-            padding: 5px 12px;
-            border-radius: 20px;
-            background: rgba(34,197,94,.1);
-            color: var(--success);
-            margin-top: 14px;
-        }
-        .dc-status .dot {
-            width: 6px; height: 6px;
-            border-radius: 50%;
-            background: var(--success);
-            animation: pulse-dot 1.5s infinite;
-        }
-
-        /* Empty State */
-        .empty-jadwal {
-            text-align: center;
-            padding: 60px 20px;
-            background: var(--card);
-            border: 1.5px dashed var(--border);
-            border-radius: 16px;
-        }
-        .empty-jadwal .ej-icon {
-            font-size: 48px;
-            margin-bottom: 12px;
-        }
-        .empty-jadwal .ej-title {
-            font-size: 16px;
-            font-weight: 700;
-            color: var(--text);
-            margin-bottom: 6px;
-        }
-        .empty-jadwal .ej-desc {
-            font-size: 13px;
-            color: var(--text-muted);
-            max-width: 380px;
-            margin: 0 auto;
-            line-height: 1.6;
-        }
-
-        /* Info Banner */
-        .info-banner {
-            background: rgba(45,125,210,.06);
-            border: 1.5px solid rgba(45,125,210,.15);
-            border-radius: 14px;
-            padding: 18px 22px;
-            display: flex;
-            align-items: flex-start;
-            gap: 12px;
-            margin-bottom: 24px;
-        }
-        .info-banner .ib-icon { font-size: 20px; flex-shrink: 0; margin-top: 1px; }
-        .info-banner .ib-text { font-size: 12.5px; color: var(--text-muted); line-height: 1.6; }
-        .info-banner .ib-text strong { color: var(--text); }
-
-        /* Error Banner */
-        .error-banner {
-            background: rgba(239,68,68,.06);
-            border: 1.5px solid rgba(239,68,68,.2);
-            border-radius: 14px;
-            padding: 16px 22px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 24px;
-            font-size: 13px;
-            font-weight: 600;
-            color: var(--danger);
-        }
-
-        @keyframes pulse-dot {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: .5; transform: scale(.8); }
-        }
-        @keyframes fadeUp {
-            from { opacity: 0; transform: translateY(16px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .fade-up { animation: fadeUp .4s ease both; }
-        .fade-up-d1 { animation-delay: .05s; }
-        .fade-up-d2 { animation-delay: .1s; }
-        .fade-up-d3 { animation-delay: .15s; }
-    </style>
+    <link rel="stylesheet" href="/css/jadwal-dokter.css">
 </head>
 
 <body>
 
-    <!-- ══ SIDEBAR ══ -->
+    <!-- ══ SIDEBAR ══ -->                                                                                                                                                                                                                                                                                                                              
     <aside class="sidebar">
         <div class="sidebar-logo">
             <div class="logo-mark">
@@ -325,28 +31,28 @@
             <a class="nav-item" href="{{ route('pasien.dashboard') }}">
                 <span class="nav-icon">🏠</span> Dashboard
             </a>
-            <a class="nav-item" href="#">
+            <a class="nav-item" href="{{ route('pasien.konsultasi-chatbot') }}">
                 <span class="nav-icon">💬</span> Konsultasi Chatbot
-                <span class="nav-badge">1</span>
+                <span class="nav-badge">AI</span>
             </a>
             <a class="nav-item active" href="{{ route('pasien.jadwal-dokter') }}">
                 <span class="nav-icon">📅</span> Jadwal Dokter
             </a>
-            <a class="nav-item" href="#">
+            <a class="nav-item" href="{{ route('pasien.booking.index') }}">
                 <span class="nav-icon">🗒️</span> Booking Konsultasi
             </a>
 
             <div class="nav-section-label" style="margin-top:12px;">Informasi</div>
-            <a class="nav-item" href="#">
+            <a class="nav-item" href="{{ route('pasien.informasi-rs') }}">
                 <span class="nav-icon">ℹ️</span> Informasi Rumah Sakit
             </a>
-            <a class="nav-item" href="#">
-                <span class="nav-icon">❓</span> FAQ Kesehatan Paru
+            <a class="nav-item" href="{{ route('pasien.faq') }}">
+                <span class="nav-icon">❓</span> FAQ
             </a>
 
             <div class="nav-section-label" style="margin-top:12px;">Akun</div>
-            <a class="nav-item" href="#">
-                <span class="nav-icon">⚙️</span> Pengaturan
+            <a class="nav-item" href="{{ route('pasien.profil') }}">
+                <span class="nav-icon">👤</span> Profil
             </a>
             <a class="nav-item" href="{{ route('logout.get') }}" style="color:rgba(239,68,68,.7);">
                 <span class="nav-icon">🚪</span> Keluar
@@ -377,11 +83,6 @@
             </div>
             <div class="topbar-right">
                 <div class="time-chip" id="clock"></div>
-                <div class="topbar-btn" title="Notifikasi">
-                    🔔
-                    <div class="notif-dot"></div>
-                </div>
-                <div class="topbar-btn" title="Bantuan">❓</div>
             </div>
         </header>
 
@@ -462,7 +163,7 @@
                             </div>
                             @if(isset($jadwal['FS_KD_LAYANAN']))
                             <div class="dc-row">
-                                <div class="dc-row-icon">🏥</div>
+                                <div class="dc-row-icon">🏷️</div>
                                 <div class="dc-row-info">
                                     <div class="dc-row-label">Kode Layanan</div>
                                     <div class="dc-row-val" style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--accent);">{{ $jadwal['FS_KD_LAYANAN'] }}</div>

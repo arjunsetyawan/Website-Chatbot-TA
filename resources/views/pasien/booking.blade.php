@@ -7,149 +7,11 @@
     <title>Booking Konsultasi Poli Paru – RSUD Sultan Fatah</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/css/style.css">
-    <style>
-        .booking-hero {
-            background: linear-gradient(135deg, #0a2540 0%, #1a4a80 60%, #2d7dd2 100%);
-            border-radius: 20px; padding: 34px 38px; margin-bottom: 24px;
-            position: relative; overflow: hidden;
-        }
-        .booking-hero::before { content:''; position:absolute; top:-50px; right:-50px; width:220px; height:220px; border-radius:50%; background:rgba(255,255,255,.06); }
-        .booking-hero::after { content:''; position:absolute; bottom:-70px; right:140px; width:160px; height:160px; border-radius:50%; background:rgba(255,255,255,.04); }
-        .booking-hero h1 { font-family:'DM Serif Display',serif; font-size:25px; color:#fff; margin-bottom:6px; }
-        .booking-hero p { font-size:13px; color:rgba(255,255,255,.6); max-width:480px; line-height:1.6; }
-        .booking-hero .hero-inner { position:relative; z-index:1; display:flex; align-items:center; justify-content:space-between; }
-        .hero-date-chip { background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.2); border-radius:12px; padding:12px 20px; text-align:center; backdrop-filter:blur(6px); }
-        .hero-date-chip .hd-day { font-size:28px; font-weight:700; color:#fff; line-height:1; }
-        .hero-date-chip .hd-info { font-size:10px; color:rgba(255,255,255,.55); margin-top:3px; }
-
-        .alert-msg { padding:14px 20px; border-radius:12px; font-size:13px; font-weight:600; margin-bottom:20px; display:flex; align-items:center; gap:8px; animation:fadeUp .3s ease both; }
-        .alert-success { background:rgba(34,197,94,.08); border:1.5px solid rgba(34,197,94,.2); color:#16a34a; }
-        .alert-error { background:rgba(239,68,68,.08); border:1.5px solid rgba(239,68,68,.2); color:#dc2626; }
-
-        .booking-grid { display:grid; grid-template-columns:1.1fr .9fr; gap:24px; margin-bottom:24px; }
-        .section-card { background:var(--card); border:1.5px solid var(--border); border-radius:16px; overflow:hidden; }
-        .section-head { padding:18px 24px; border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; }
-        .section-title-text { font-size:14px; font-weight:700; color:var(--text); display:flex; align-items:center; gap:8px; }
-        .section-body { padding:22px 24px; }
-
-        /* Doctor Accordion */
-        .dokter-block { border:1.5px solid var(--border); border-radius:14px; margin-bottom:12px; overflow:hidden; transition:border-color .2s; }
-        .dokter-block.active { border-color:var(--accent); }
-        .dokter-header { display:flex; align-items:center; gap:12px; padding:16px 18px; cursor:pointer; transition:background .2s; }
-        .dokter-header:hover { background:rgba(45,125,210,.03); }
-        .dh-avatar { width:42px; height:42px; border-radius:12px; background:linear-gradient(135deg,var(--accent),var(--accent2)); display:flex; align-items:center; justify-content:center; font-size:19px; flex-shrink:0; box-shadow:0 3px 10px rgba(45,125,210,.2); }
-        .dh-info { flex:1; }
-        .dh-name { font-size:13.5px; font-weight:700; color:var(--text); }
-        .dh-poli { font-size:11px; color:var(--accent); font-weight:600; margin-top:1px; }
-        .dh-meta { font-size:10.5px; color:var(--text-muted); margin-top:3px; }
-        .dh-badge { font-size:10.5px; font-weight:600; padding:4px 10px; border-radius:20px; flex-shrink:0; }
-        .dh-badge.available { background:rgba(34,197,94,.1); color:#16a34a; }
-        .dh-badge.full { background:rgba(239,68,68,.08); color:#dc2626; }
-
-        /* Slots Grid */
-        .slots-panel { padding:0 18px 18px; display:none; }
-        .slots-panel.show { display:block; }
-        .slots-label { font-size:11.5px; font-weight:600; color:var(--text-muted); margin-bottom:10px; display:flex; align-items:center; gap:6px; }
-        .slots-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(90px, 1fr)); gap:8px; margin-bottom:16px; }
-        .slot-btn {
-            padding:10px 6px; border:1.5px solid var(--border); border-radius:10px;
-            background:var(--white); cursor:pointer; text-align:center;
-            transition:all .2s; font-family:'Plus Jakarta Sans',sans-serif;
-        }
-        .slot-btn:hover:not(.disabled):not(.selected) { border-color:var(--accent); background:rgba(45,125,210,.04); }
-        .slot-btn.selected { border-color:var(--accent); background:rgba(45,125,210,.08); box-shadow:0 0 0 3px rgba(45,125,210,.12); }
-        .slot-btn.disabled { opacity:.35; cursor:not-allowed; background:var(--bg); }
-        .slot-btn .sb-time { font-size:13px; font-weight:700; color:var(--text); }
-        .slot-btn .sb-range { font-size:9.5px; color:var(--text-muted); margin-top:2px; }
-        .slot-btn .sb-status { font-size:9px; font-weight:600; margin-top:3px; }
-        .slot-btn .sb-status.avail { color:var(--success); }
-        .slot-btn .sb-status.taken { color:var(--danger); }
-        .slot-btn .sb-status.past-s { color:var(--text-muted); }
-        .slot-btn input[type="radio"] { display:none; }
-
-        .form-row { margin-bottom:16px; }
-        .form-label { font-size:12px; font-weight:600; color:var(--text); margin-bottom:6px; display:block; }
-        .form-label span { color:var(--text-muted); font-weight:400; }
-        .form-textarea { width:100%; border:1.5px solid var(--border); border-radius:10px; padding:11px 14px; font-size:13px; font-family:'Plus Jakarta Sans',sans-serif; color:var(--text); outline:none; transition:border-color .2s; background:var(--white); min-height:80px; resize:vertical; }
-        .form-textarea:focus { border-color:var(--accent); }
-        .form-help { font-size:11px; color:var(--text-muted); margin-top:4px; }
-        .form-error { font-size:11px; color:var(--danger); margin-top:4px; font-weight:600; }
-
-        .submit-btn {
-            background:linear-gradient(135deg,var(--accent),#1a6fc0); color:#fff; border:none;
-            padding:13px 28px; border-radius:12px; font-size:13.5px; font-weight:700;
-            font-family:'Plus Jakarta Sans',sans-serif; cursor:pointer; transition:all .2s;
-            display:inline-flex; align-items:center; gap:8px;
-            box-shadow:0 4px 14px rgba(45,125,210,.3);
-        }
-        .submit-btn:hover { transform:translateY(-1px); box-shadow:0 8px 20px rgba(45,125,210,.4); }
-        .submit-btn:disabled { opacity:.5; cursor:not-allowed; transform:none; box-shadow:none; }
-
-        .no-schedule { text-align:center; padding:40px 24px; }
-        .no-schedule .ns-icon { font-size:48px; margin-bottom:10px; }
-        .no-schedule .ns-title { font-size:15px; font-weight:700; color:var(--text); margin-bottom:6px; }
-        .no-schedule .ns-desc { font-size:12.5px; color:var(--text-muted); line-height:1.6; max-width:360px; margin:0 auto 16px; }
-        .ns-link { display:inline-flex; align-items:center; gap:6px; background:rgba(45,125,210,.08); color:var(--accent); font-size:12.5px; font-weight:600; padding:10px 18px; border-radius:10px; text-decoration:none; transition:background .2s; }
-        .ns-link:hover { background:rgba(45,125,210,.15); }
-
-        /* Date Picker Bar */
-        .date-picker-bar {
-            display:flex; align-items:center; gap:14px; margin-bottom:20px;
-            background:var(--card); border:1.5px solid var(--border); border-radius:14px;
-            padding:14px 22px; animation:fadeUp .3s ease both; animation-delay:.05s;
-        }
-        .dpb-label { font-size:13px; font-weight:600; color:var(--text); display:flex; align-items:center; gap:6px; }
-        .dpb-input {
-            height:38px; border:1.5px solid var(--border); border-radius:10px;
-            padding:0 14px; font-size:13px; font-family:'Plus Jakarta Sans',sans-serif;
-            color:var(--text); outline:none; background:var(--white); transition:border-color .2s;
-        }
-        .dpb-input:focus { border-color:var(--accent); }
-        .dpb-today {
-            display:inline-flex; align-items:center; gap:4px; font-size:11.5px; font-weight:600;
-            color:var(--accent); background:rgba(45,125,210,.08); padding:7px 14px;
-            border-radius:8px; border:none; cursor:pointer; transition:background .2s;
-            font-family:'Plus Jakarta Sans',sans-serif; text-decoration:none;
-        }
-        .dpb-today:hover { background:rgba(45,125,210,.15); }
-        .dpb-date-label { font-size:12px; color:var(--text-muted); margin-left:auto; }
-
-        /* Legend */
-        .slots-legend { display:flex; gap:16px; margin-bottom:14px; }
-        .legend-item { display:flex; align-items:center; gap:5px; font-size:10.5px; color:var(--text-muted); }
-        .legend-dot { width:10px; height:10px; border-radius:3px; }
-        .legend-dot.avail { background:rgba(34,197,94,.3); border:1.5px solid rgba(34,197,94,.5); }
-        .legend-dot.taken { background:rgba(239,68,68,.15); border:1.5px solid rgba(239,68,68,.3); }
-        .legend-dot.past-l { background:rgba(107,126,148,.12); border:1.5px solid rgba(107,126,148,.2); }
-
-        /* Booking List */
-        .booking-list { display:flex; flex-direction:column; gap:10px; }
-        .booking-item { display:flex; align-items:center; gap:14px; padding:14px 16px; border:1.5px solid var(--border); border-radius:12px; transition:border-color .2s; }
-        .booking-item:hover { border-color:var(--accent); }
-        .bi-date { text-align:center; min-width:48px; padding:8px; border-radius:10px; background:rgba(45,125,210,.08); }
-        .bi-date .bi-day { font-size:18px; font-weight:700; color:var(--accent); line-height:1; }
-        .bi-date .bi-month { font-size:9px; font-weight:600; color:var(--text-muted); text-transform:uppercase; margin-top:2px; }
-        .bi-info { flex:1; }
-        .bi-doctor { font-size:13px; font-weight:700; color:var(--text); }
-        .bi-meta { font-size:11px; color:var(--text-muted); margin-top:2px; }
-        .bi-keluhan { font-size:11px; color:var(--text-muted); margin-top:3px; font-style:italic; }
-        .bi-status { display:inline-flex; align-items:center; gap:4px; font-size:10.5px; font-weight:600; padding:5px 12px; border-radius:20px; flex-shrink:0; }
-        .bi-status.menunggu { background:rgba(245,158,11,.1); color:#d97706; }
-        .bi-status.terkonfirmasi { background:rgba(34,197,94,.1); color:#16a34a; }
-        .bi-status.selesai { background:rgba(107,126,148,.1); color:var(--text-muted); }
-        .bi-status.dibatalkan { background:rgba(239,68,68,.08); color:#dc2626; }
-        .bi-cancel-btn { font-size:11px; font-weight:600; color:var(--danger); background:rgba(239,68,68,.06); border:1px solid rgba(239,68,68,.15); padding:5px 10px; border-radius:6px; cursor:pointer; transition:all .2s; font-family:'Plus Jakarta Sans',sans-serif; }
-        .bi-cancel-btn:hover { background:rgba(239,68,68,.12); }
-        .empty-bookings { text-align:center; padding:32px 16px; color:var(--text-muted); font-size:12.5px; }
-
-        @keyframes fadeUp { from{opacity:0;transform:translateY(14px);} to{opacity:1;transform:translateY(0);} }
-        .fade-up { animation:fadeUp .35s ease both; }
-        .fd1 { animation-delay:.06s; } .fd2 { animation-delay:.12s; } .fd3 { animation-delay:.18s; }
-    </style>
+    <link rel="stylesheet" href="/css/booking.css">
 </head>
 
 <body>
-    <!-- ══ SIDEBAR ══ -->
+        <!-- ══ SIDEBAR ══ -->
     <aside class="sidebar">
         <div class="sidebar-logo">
             <div class="logo-mark">
@@ -160,23 +22,40 @@
                 </div>
             </div>
         </div>
+
         <nav class="sidebar-nav">
             <div class="nav-section-label">Menu Utama</div>
-            <a class="nav-item" href="{{ route('pasien.dashboard') }}"><span class="nav-icon">🏠</span> Dashboard</a>
-            <a class="nav-item" href="#"><span class="nav-icon">💬</span> Konsultasi Chatbot <span class="nav-badge">1</span></a>
-            <a class="nav-item" href="{{ route('pasien.jadwal-dokter') }}"><span class="nav-icon">📅</span> Jadwal Dokter</a>
-            <a class="nav-item active" href="{{ route('pasien.booking.index') }}"><span class="nav-icon">🗒️</span> Booking Konsultasi</a>
+            <a class="nav-item" href="{{ route('pasien.dashboard') }}">
+                <span class="nav-icon">🏠</span> Dashboard
+            </a>
+            <a class="nav-item" href="{{ route('pasien.konsultasi-chatbot') }}">
+                <span class="nav-icon">💬</span> Konsultasi Chatbot
+                <span class="nav-badge">AI</span>
+            </a>
+            <a class="nav-item" href="{{ route('pasien.jadwal-dokter') }}">
+                <span class="nav-icon">📅</span> Jadwal Dokter
+            </a>
+            <a class="nav-item active" href="{{ route('pasien.booking.index') }}">
+                <span class="nav-icon">🗒️</span> Booking Konsultasi
+            </a>
+
             <div class="nav-section-label" style="margin-top:12px;">Informasi</div>
-            <a class="nav-item" href="#"><span class="nav-icon">ℹ️</span> Informasi Rumah Sakit</a>
-            <a class="nav-item" href="#"><span class="nav-icon">❓</span> FAQ Kesehatan Paru</a>
+            <a class="nav-item" href="{{ route('pasien.informasi-rs') }}">
+                <span class="nav-icon">ℹ️</span> Informasi Rumah Sakit
+            </a>
+            <a class="nav-item" href="{{ route('pasien.faq') }}">
+                <span class="nav-icon">❓</span> FAQ
+            </a>
+
             <div class="nav-section-label" style="margin-top:12px;">Akun</div>
-            <a class="nav-item" href="#">
-                <span class="nav-icon">⚙️</span> Pengaturan
+            <a class="nav-item" href="{{ route('pasien.profil') }}">
+                <span class="nav-icon">👤</span> Profil
             </a>
             <a class="nav-item" href="{{ route('logout.get') }}" style="color:rgba(239,68,68,.7);">
                 <span class="nav-icon">🚪</span> Keluar
             </a>
         </nav>
+
         <div class="sidebar-footer">
             <div class="user-card">
                 <div class="user-avatar">{{ strtoupper(substr(auth()->user()->name ?? 'P', 0, 1)) }}{{ strtoupper(substr(explode(' ', auth()->user()->name ?? 'Pasien')[1] ?? '', 0, 1)) }}</div>
@@ -184,6 +63,7 @@
                     <div class="user-name">{{ auth()->user()->name ?? 'Pasien' }}</div>
                     <div class="user-role">Pasien</div>
                 </div>
+                <span style="color:rgba(255,255,255,.3);font-size:14px;">⋮</span>
             </div>
         </div>
     </aside>
@@ -198,8 +78,6 @@
             </div>
             <div class="topbar-right">
                 <div class="time-chip" id="clock"></div>
-                <div class="topbar-btn" title="Notifikasi">🔔<div class="notif-dot"></div></div>
-                <div class="topbar-btn" title="Bantuan">❓</div>
             </div>
         </header>
 
@@ -298,7 +176,7 @@
                                                 <div class="sb-time">{{ $slot['time'] }}</div>
                                                 <div class="sb-range">{{ $slot['time'] }} – {{ $slot['end_time'] }}</div>
                                                 <div class="sb-status {{ $slot['available'] ? 'avail' : ($slot['booked'] ? 'taken' : 'past-s') }}">
-                                                    @if($slot['available']) ✓ Tersedia
+                                                    @if($slot['available']) ✔ Tersedia
                                                     @elseif($slot['booked']) ✕ Dipesan
                                                     @else ○ Lewat
                                                     @endif
@@ -367,7 +245,7 @@
                                     <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;">
                                         <span class="bi-status {{ $booking->status }}">
                                             @if($booking->status === 'menunggu') ⏳ Menunggu
-                                            @elseif($booking->status === 'terkonfirmasi') ✓ Terkonfirmasi
+                                            @elseif($booking->status === 'terkonfirmasi') ✔ Terkonfirmasi
                                             @endif
                                         </span>
                                         @if(in_array($booking->status, ['menunggu', 'terkonfirmasi']))
@@ -382,7 +260,7 @@
                             </div>
                         @else
                             <div class="empty-bookings">
-                                <div style="font-size:32px;margin-bottom:8px;">📭</div>
+                                <div style="font-size:32px;margin-bottom:8px;">🔭</div>
                                 <div>Belum ada booking mendatang.</div>
                             </div>
                         @endif
@@ -407,10 +285,10 @@
                                 </div>
                                 <div class="bi-info">
                                     <div class="bi-doctor">{{ $booking->nama_dokter }}</div>
-                                    <div class="bi-meta">🫁 {{ $booking->poli }}  ·  ⏰ Sesi {{ $booking->jam_booking ?? '-' }}  ·  {{ $booking->tanggal_konsultasi->translatedFormat('d M Y') }}</div>
+                                    <div class="bi-meta">🫁 {{ $booking->poli }} &nbsp;·&nbsp; ⏰ Sesi {{ $booking->jam_booking ?? '-' }} &nbsp;·&nbsp; {{ $booking->tanggal_konsultasi->translatedFormat('d M Y') }}</div>
                                 </div>
                                 <span class="bi-status {{ $booking->status }}">
-                                    @if($booking->status === 'selesai') ✓ Selesai
+                                    @if($booking->status === 'selesai') ✔ Selesai
                                     @elseif($booking->status === 'dibatalkan') ✕ Dibatalkan
                                     @else {{ ucfirst($booking->status) }}
                                     @endif

@@ -22,6 +22,16 @@ class AdminController extends Controller
             ->whereYear('created_at', Carbon::now()->year)
             ->count();
 
+        $pasienBaruHariIni = Pasien::whereDate('created_at', Carbon::now('Asia/Jakarta')->toDateString())->count();
+
+        $pasienLaki      = Pasien::where('jenis_kelamin', 'LAKI-LAKI')->count();
+        $pasienPerempuan = Pasien::where('jenis_kelamin', 'PEREMPUAN')->count();
+
+        $totalUsers = User::count();
+        $userBaruBulanIni = User::whereMonth('created_at', Carbon::now()->month)
+            ->whereYear('created_at', Carbon::now()->year)
+            ->count();
+
         $pasiens = Pasien::orderBy('created_at', 'desc')->paginate(6);
 
         $selectedPoli = $request->input('poli', '');
@@ -61,12 +71,29 @@ class AdminController extends Controller
             ->orderBy('jam_booking')
             ->get();
 
-        $totalBookingHariIni = $konsultasiHariIni->count();
-        $pendingBookingHariIni = $konsultasiHariIni->where('status', 'menunggu')->count();
+        $totalBookingHariIni    = $konsultasiHariIni->count();
+        $pendingBookingHariIni  = $konsultasiHariIni->where('status', 'menunggu')->count();
+
+        // Statistik konsultasi keseluruhan
+        $totalMenunggu       = Konsultasi::where('status', 'menunggu')->count();
+        $totalTerkonfirmasi  = Konsultasi::where('status', 'terkonfirmasi')->count();
+        $totalDibatalkan     = Konsultasi::where('status', 'dibatalkan')->count();
+        $totalBookingBulanIni = Konsultasi::whereMonth('created_at', Carbon::now()->month)
+            ->whereYear('created_at', Carbon::now()->year)
+            ->count();
+
+        // 5 booking konsultasi terbaru (semua tanggal)
+        $recentBookings = Konsultasi::with(['pasien', 'user'])
+            ->orderByDesc('created_at')
+            ->limit(5)
+            ->get();
 
         return view('admin.dashboard', compact(
             'totalPasien',
             'pasienBaruBulanIni',
+            'pasienBaruHariIni',
+            'pasienLaki',
+            'pasienPerempuan',
             'pasiens',
             'totalDokterAktif',
             'jadwalDokterAktif',
@@ -74,7 +101,14 @@ class AdminController extends Controller
             'selectedPoli',
             'konsultasiHariIni',
             'totalBookingHariIni',
-            'pendingBookingHariIni'
+            'pendingBookingHariIni',
+            'totalMenunggu',
+            'totalTerkonfirmasi',
+            'totalDibatalkan',
+            'totalBookingBulanIni',
+            'totalUsers',
+            'userBaruBulanIni',
+            'recentBookings'
         ));
     }
 
@@ -84,6 +118,11 @@ class AdminController extends Controller
 
     public function bookingIndex(Request $request)
     {
+        // Auto-expire: booking menunggu yang tanggalnya sudah lewat
+        Konsultasi::where('status', 'menunggu')
+            ->whereDate('tanggal_konsultasi', '<', Carbon::today('Asia/Jakarta'))
+            ->update(['status' => 'kadaluwarsa']);
+
         $query = Konsultasi::with(['pasien', 'user'])->orderByDesc('created_at');
 
         if ($search = $request->input('search')) {
@@ -94,8 +133,8 @@ class AdminController extends Controller
         }
 
         $bookings = $query->paginate(10);
-        
-        $totalBookings = Konsultasi::count();
+
+        $totalBookings   = Konsultasi::count();
         $pendingBookings = Konsultasi::where('status', 'menunggu')->count();
 
         return view('admin.booking.index', compact('bookings', 'totalBookings', 'pendingBookings'));
@@ -104,7 +143,13 @@ class AdminController extends Controller
     public function bookingApprove($id)
     {
         $booking = Konsultasi::findOrFail($id);
-        
+
+        // Tolak jika tanggal konsultasi sudah lewat
+        if (Carbon::parse($booking->tanggal_konsultasi)->startOfDay()->lt(Carbon::today('Asia/Jakarta'))) {
+            $booking->update(['status' => 'kadaluwarsa']);
+            return redirect()->back()->with('error', 'Booking tidak dapat disetujui karena tanggal konsultasi sudah terlewat.');
+        }
+
         if ($booking->status === 'menunggu') {
             $booking->update(['status' => 'terkonfirmasi']);
             return redirect()->back()->with('success', 'Booking berhasil disetujui.');

@@ -47,28 +47,7 @@
                 @endif
             </a>
 
-            <div class="nav-label" style="margin-top:10px;">Chatbot (Rule-Based)</div>
-            <a class="nav-item" href="#">
-                <span class="nav-icon">💬</span> Riwayat Chat
-            </a>
-            <a class="nav-item" href="#">
-                <span class="nav-icon">📋</span> Kelola Rule & Respons
-            </a>
-            <a class="nav-item" href="#">
-                <span class="nav-icon">🔑</span> Kelola Kata Kunci
-            </a>
-            <a class="nav-item" href="#">
-                <span class="nav-icon">⚠️</span> Pertanyaan Fallback
-                <span class="nav-badge red">7</span>
-            </a>
-
-            <div class="nav-label" style="margin-top:10px;">Sistem</div>
-            <a class="nav-item" href="#">
-                <span class="nav-icon">🔒</span> Log Keamanan
-            </a>
-            <a class="nav-item" href="#">
-                <span class="nav-icon">⚙️</span> Pengaturan
-            </a>
+            <div class="nav-label" style="margin-top:10px;">Akun</div>
             <a class="nav-item" href="{{ route('logout.get') }}" style="color:rgba(239,68,68,.7);">
                 <span class="nav-icon">🚪</span> Keluar
             </a>

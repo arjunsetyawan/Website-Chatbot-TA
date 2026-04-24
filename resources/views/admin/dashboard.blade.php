@@ -47,31 +47,6 @@
                         <span class="stat-footer-label">perlu konfirmasi</span>
                     </div>
                 </a>
-                <!-- 4. Sesi Chatbot -->
-                <div class="stat-card">
-                    <div class="stat-header">
-                        <div class="stat-label-top">Sesi Chatbot</div>
-                        <div class="stat-icon-sm">💬</div>
-                    </div>
-                    <div class="stat-value">63</div>
-                    <div class="stat-footer">
-                        <span class="stat-delta delta-up">↑ 12%</span>
-                        <span class="stat-footer-label">vs kemarin</span>
-                    </div>
-                </div>
-                <!-- 5. Pertanyaan Terjawab -->
-                <div class="stat-card">
-                    <div class="stat-header">
-                        <div class="stat-label-top">Pertanyaan Terjawab</div>
-                        <div class="stat-icon-sm">✅</div>
-                    </div>
-                    <div class="stat-value">89<span
-                            style="font-size:14px;font-weight:500;color:var(--text-muted)">%</span></div>
-                    <div class="stat-footer">
-                        <span class="stat-delta delta-down">7 fallback</span>
-                        <span class="stat-footer-label">tidak cocok rule</span>
-                    </div>
-                </div>
             </div>
 
             <!-- MAIN GRID -->
@@ -244,252 +219,123 @@
             </div>
             <div class="bottom-row">
 
-                <!-- Activity Log -->
-                <div class="card">
-                    <div class="card-head">
-                        <div class="card-title"><span class="card-title-icon">📋</span> Log Aktivitas</div>
-                        <button class="card-action-btn">Lihat Semua</button>
-                    </div>
-                    <div class="log-list">
-                        <div class="log-item">
-                            <div class="log-dot-col">
-                                <div class="log-dot-outer success"></div>
-                                <div class="log-line"></div>
-                            </div>
-                            <div class="log-content">
-                                <div class="log-action">Booking baru dikonfirmasi</div>
-                                <div class="log-detail">Harjuno Setyawan → dr. Siti Rahayu</div>
-                                <div class="log-time">12:03 WIB</div>
-                            </div>
-                        </div>
-                        <div class="log-item">
-                            <div class="log-dot-col">
-                                <div class="log-dot-outer info"></div>
-                                <div class="log-line"></div>
-                            </div>
-                            <div class="log-content">
-                                <div class="log-action">Pasien baru didaftarkan</div>
-                                <div class="log-detail">RSF-0142 · Nuraini Hasanah</div>
-                                <div class="log-time">11:47 WIB</div>
-                            </div>
-                        </div>
-                        <div class="log-item">
-                            <div class="log-dot-col">
-                                <div class="log-dot-outer warning"></div>
-                                <div class="log-line"></div>
-                            </div>
-                            <div class="log-content">
-                                <div class="log-action">Jadwal dokter diperbarui</div>
-                                <div class="log-detail">dr. Ahmad Fauzi — slot ditambah 2</div>
-                                <div class="log-time">11:12 WIB</div>
-                            </div>
-                        </div>
-                        <div class="log-item">
-                            <div class="log-dot-col">
-                                <div class="log-dot-outer danger"></div>
-                                <div class="log-line"></div>
-                            </div>
-                            <div class="log-content">
-                                <div class="log-action">Booking dibatalkan</div>
-                                <div class="log-detail">RSF-0130 · Sari Indrawati</div>
-                                <div class="log-time">10:55 WIB</div>
-                            </div>
-                        </div>
-                        <div class="log-item">
-                            <div class="log-dot-col">
-                                <div class="log-dot-outer success"></div>
-                                <div class="log-line"></div>
-                            </div>
-                            <div class="log-content">
-                                <div class="log-action">Admin login berhasil</div>
-                                <div class="log-detail">IP: 192.168.1.10 · Chrome/Win</div>
-                                <div class="log-time">08:01 WIB</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Chatbot Stats – Rule-Based -->
+                <!-- Booking Konsultasi Terbaru -->
                 <div class="card">
                     <div class="card-head">
                         <div>
-                            <div class="card-title"><span class="card-title-icon">💬</span> Statistik Chatbot</div>
-                            <div class="card-subtitle">Rule-Based · 63 sesi hari ini</div>
+                            <div class="card-title"><span class="card-title-icon">🗒️</span> Booking Terbaru</div>
+                            <div class="card-subtitle">5 booking terakhir dari semua tanggal</div>
                         </div>
-                        <button class="card-action-btn">+ Tambah Rule</button>
+                        <a href="{{ route('admin.booking.index') }}" class="card-action-btn" style="text-decoration:none;">Lihat Semua</a>
+                    </div>
+                    <div style="padding: 4px 0;">
+                        @forelse($recentBookings as $bk)
+                        <a href="{{ route('admin.booking.index') }}" style="text-decoration:none;color:inherit;display:flex;align-items:center;gap:12px;padding:11px 18px;border-bottom:1px solid var(--border-light);transition:background .15s;" onmouseover="this.style.background='var(--row-hover)'" onmouseout="this.style.background=''">
+                            <div style="flex:1;overflow:hidden;">
+                                <div style="font-size:12.5px;font-weight:600;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-transform:capitalize;">
+                                    {{ strtolower($bk->pasien->nama ?? $bk->user->name ?? 'Anonim') }}
+                                </div>
+                                <div style="font-size:11px;color:var(--text-muted);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;" title="{{ $bk->nama_dokter }}">
+                                    {{ $bk->nama_dokter ?? '-' }}
+                                </div>
+                                <div style="font-size:10.5px;color:var(--text-light);margin-top:2px;font-family:'JetBrains Mono',monospace;">
+                                    {{ \Carbon\Carbon::parse($bk->tanggal_konsultasi)->format('d M Y') }}
+                                </div>
+                            </div>
+                            <div style="flex-shrink:0;">
+                                @if($bk->status === 'menunggu')
+                                    <span class="badge badge-warning">⏳ Menunggu</span>
+                                @elseif($bk->status === 'terkonfirmasi')
+                                    <span class="badge badge-success">✓ Konfirmasi</span>
+                                @elseif($bk->status === 'dibatalkan')
+                                    <span class="badge badge-danger">✕ Batal</span>
+                                @else
+                                    <span class="badge badge-neutral">{{ ucfirst($bk->status) }}</span>
+                                @endif
+                            </div>
+                        </a>
+                        @empty
+                        <div style="text-align:center;padding:36px 16px;">
+                            <div style="font-size:28px;margin-bottom:8px;">🗓️</div>
+                            <div style="font-size:12px;font-weight:600;color:var(--text);margin-bottom:4px;">Belum Ada Booking</div>
+                            <div style="font-size:11px;color:var(--text-muted);">Belum ada data konsultasi di sistem</div>
+                        </div>
+                        @endforelse
+                    </div>
+                </div>
+
+                <!-- Ringkasan Konsultasi -->
+                <div class="card">
+                    <div class="card-head">
+                        <div>
+                            <div class="card-title"><span class="card-title-icon">🗒️</span> Ringkasan Konsultasi</div>
+                            <div class="card-subtitle">{{ $totalBookingBulanIni }} booking bulan ini</div>
+                        </div>
+                        <a href="{{ route('admin.booking.index') }}" class="card-action-btn" style="text-decoration:none;">Lihat Semua</a>
                     </div>
                     <div class="chatbot-stats">
 
-                        <!-- Matched vs Fallback donut summary -->
-                        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:4px;">
-                            <div
-                                style="background:var(--success-bg);border:1px solid #bbf7d0;border-radius:8px;padding:10px 12px;text-align:center;">
-                                <div
-                                    style="font-size:19px;font-weight:700;font-family:'JetBrains Mono',monospace;color:var(--success);">
-                                    56</div>
-                                <div style="font-size:10px;color:var(--success);font-weight:600;margin-top:2px;">✓
-                                    Terjawab</div>
+                        <!-- Status breakdown -->
+                        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:16px;">
+                            <div style="background:var(--warning-bg, #fffbeb);border:1px solid #fde68a;border-radius:8px;padding:10px 12px;text-align:center;">
+                                <div style="font-size:22px;font-weight:700;font-family:'JetBrains Mono',monospace;color:var(--warning);">{{ $totalMenunggu }}</div>
+                                <div style="font-size:10px;color:var(--warning);font-weight:600;margin-top:2px;">⏳ Menunggu</div>
                             </div>
-                            <div
-                                style="background:var(--danger-bg);border:1px solid #fecaca;border-radius:8px;padding:10px 12px;text-align:center;">
-                                <div
-                                    style="font-size:19px;font-weight:700;font-family:'JetBrains Mono',monospace;color:var(--danger);">
-                                    7</div>
-                                <div style="font-size:10px;color:var(--danger);font-weight:600;margin-top:2px;">✗
-                                    Fallback</div>
+                            <div style="background:var(--success-bg);border:1px solid #bbf7d0;border-radius:8px;padding:10px 12px;text-align:center;">
+                                <div style="font-size:22px;font-weight:700;font-family:'JetBrains Mono',monospace;color:var(--success);">{{ $totalTerkonfirmasi }}</div>
+                                <div style="font-size:10px;color:var(--success);font-weight:600;margin-top:2px;">✓ Terkonfirmasi</div>
                             </div>
-                            <div
-                                style="background:var(--border-light);border:1px solid var(--border);border-radius:8px;padding:10px 12px;text-align:center;">
-                                <div
-                                    style="font-size:19px;font-weight:700;font-family:'JetBrains Mono',monospace;color:var(--text);">
-                                    42</div>
-                                <div style="font-size:10px;color:var(--text-muted);font-weight:600;margin-top:2px;">
-                                    Rule Aktif</div>
+                            <div style="background:var(--danger-bg);border:1px solid #fecaca;border-radius:8px;padding:10px 12px;text-align:center;">
+                                <div style="font-size:22px;font-weight:700;font-family:'JetBrains Mono',monospace;color:var(--danger);">{{ $totalDibatalkan }}</div>
+                                <div style="font-size:10px;color:var(--danger);font-weight:600;margin-top:2px;">✕ Dibatalkan</div>
                             </div>
                         </div>
 
-                        <!-- Match rate bar -->
-                        <div>
+                        <!-- Confirmation rate bar -->
+                        @php
+                            $totalAll = $totalMenunggu + $totalTerkonfirmasi + $totalDibatalkan;
+                            $konfirmasiRate = $totalAll > 0 ? round(($totalTerkonfirmasi / $totalAll) * 100) : 0;
+                        @endphp
+                        <div style="margin-bottom:16px;">
                             <div class="chatstat-row" style="margin-bottom:5px;">
-                                <span class="chatstat-label" style="font-weight:600;color:var(--text);">Rule Match
-                                    Rate</span>
-                                <span class="chatstat-val" style="color:var(--success);">88.9%</span>
+                                <span class="chatstat-label" style="font-weight:600;color:var(--text);">Tingkat Konfirmasi</span>
+                                <span class="chatstat-val" style="color:var(--success);">{{ $konfirmasiRate }}%</span>
                             </div>
                             <div style="height:8px;background:var(--bg);border-radius:20px;overflow:hidden;">
-                                <div
-                                    style="height:100%;width:89%;background:linear-gradient(90deg,var(--success),#4ade80);border-radius:20px;">
-                                </div>
+                                <div style="height:100%;width:{{ $konfirmasiRate }}%;background:linear-gradient(90deg,var(--success),#4ade80);border-radius:20px;"></div>
                             </div>
                         </div>
 
-                        <!-- Top keyword hits -->
+                        <!-- Booking per bulan ini vs kemarin -->
                         <div style="border-top:1px solid var(--border);padding-top:12px;">
-                            <div
-                                style="font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text-muted);margin-bottom:9px;">
-                                Kata Kunci Paling Sering Cocok</div>
-                            <div>
-                                <div class="chatstat-row">
-                                    <span class="chatstat-label">🔑 "sesak nafas"</span>
-                                    <span class="chatstat-val">21 kali</span>
-                                </div>
-                                <div class="chatstat-bar-wrap">
-                                    <div class="chatstat-bar" style="width:100%"></div>
-                                </div>
+                            <div style="font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text-muted);margin-bottom:10px;">
+                                📊 Statistik Booking
                             </div>
-                            <div style="margin-top:8px;">
+                            <div style="display:flex;flex-direction:column;gap:10px;">
                                 <div class="chatstat-row">
-                                    <span class="chatstat-label">🔑 "batuk berdahak"</span>
-                                    <span class="chatstat-val">17 kali</span>
+                                    <span class="chatstat-label">📅 Total Booking Hari Ini</span>
+                                    <span class="chatstat-val">{{ $totalBookingHariIni }}</span>
                                 </div>
                                 <div class="chatstat-bar-wrap">
-                                    <div class="chatstat-bar" style="width:81%;background:var(--info)"></div>
+                                    <div class="chatstat-bar" style="width:{{ $totalBookingHariIni > 0 ? min(100, $totalBookingHariIni * 10) : 0 }}%"></div>
                                 </div>
-                            </div>
-                            <div style="margin-top:8px;">
-                                <div class="chatstat-row">
-                                    <span class="chatstat-label">🔑 "jadwal dokter"</span>
-                                    <span class="chatstat-val">11 kali</span>
+                                <div class="chatstat-row" style="margin-top:4px;">
+                                    <span class="chatstat-label">📆 Total Booking Bulan Ini</span>
+                                    <span class="chatstat-val">{{ $totalBookingBulanIni }}</span>
                                 </div>
                                 <div class="chatstat-bar-wrap">
-                                    <div class="chatstat-bar" style="width:52%;background:var(--warning)"></div>
+                                    <div class="chatstat-bar" style="width:{{ $totalBookingBulanIni > 0 ? min(100, $totalBookingBulanIni * 3) : 0 }}%;background:var(--info)"></div>
                                 </div>
-                            </div>
-                            <div style="margin-top:8px;">
-                                <div class="chatstat-row">
-                                    <span class="chatstat-label">🔑 "cara booking"</span>
-                                    <span class="chatstat-val">7 kali</span>
+                                <div class="chatstat-row" style="margin-top:4px;">
+                                    <span class="chatstat-label">⏳ Menunggu Konfirmasi</span>
+                                    <span class="chatstat-val" style="color:var(--warning);">{{ $totalMenunggu }}</span>
                                 </div>
                                 <div class="chatstat-bar-wrap">
-                                    <div class="chatstat-bar" style="width:33%;background:var(--text-muted)"></div>
+                                    <div class="chatstat-bar" style="width:{{ $totalAll > 0 ? round(($totalMenunggu / $totalAll) * 100) : 0 }}%;background:var(--warning)"></div>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Fallback alert -->
-                        <div style="border-top:1px solid var(--border);padding-top:12px;">
-                            <div
-                                style="font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text-muted);margin-bottom:9px;">
-                                ⚠️ Pertanyaan Fallback Terbaru</div>
-                            <div style="display:flex;flex-direction:column;gap:6px;">
-                                <div
-                                    style="display:flex;align-items:center;justify-content:space-between;padding:7px 10px;background:var(--danger-bg);border:1px solid #fecaca;border-radius:7px;">
-                                    <span style="font-size:11.5px;color:var(--text);font-style:italic;">"apakah saya
-                                        boleh olahraga?"</span>
-                                    <button class="action-btn"
-                                        style="font-size:10px;padding:3px 8px;border-color:#fca5a5;color:var(--danger);">+
-                                        Rule</button>
-                                </div>
-                                <div
-                                    style="display:flex;align-items:center;justify-content:space-between;padding:7px 10px;background:var(--danger-bg);border:1px solid #fecaca;border-radius:7px;">
-                                    <span style="font-size:11.5px;color:var(--text);font-style:italic;">"obat apa yang
-                                        harus diminum?"</span>
-                                    <button class="action-btn"
-                                        style="font-size:10px;padding:3px 8px;border-color:#fca5a5;color:var(--danger);">+
-                                        Rule</button>
-                                </div>
-                                <div
-                                    style="display:flex;align-items:center;justify-content:space-between;padding:7px 10px;background:var(--danger-bg);border:1px solid #fecaca;border-radius:7px;">
-                                    <span style="font-size:11.5px;color:var(--text);font-style:italic;">"berapa lama
-                                        masa pemulihan?"</span>
-                                    <button class="action-btn"
-                                        style="font-size:10px;padding:3px 8px;border-color:#fca5a5;color:var(--danger);">+
-                                        Rule</button>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-
-                <!-- System Status -->
-                <div class="card">
-                    <div class="card-head">
-                        <div class="card-title"><span class="card-title-icon">🖥️</span> Status Sistem</div>
-                        <span style="font-size:11px;color:var(--success);font-weight:600;">● Semua Normal</span>
-                    </div>
-                    <div class="sys-list">
-                        <div class="sys-item">
-                            <div class="sys-name"><span class="sys-icon">🌐</span> Web Server (Apache)</div>
-                            <div class="sys-info">
-                                <div class="sys-status ok">Online</div>
-                                <div class="sys-uptime">Uptime 99.98%</div>
-                            </div>
-                        </div>
-                        <div class="sys-item">
-                            <div class="sys-name"><span class="sys-icon">🗄️</span> Database (MySQL)</div>
-                            <div class="sys-info">
-                                <div class="sys-status ok">Online</div>
-                                <div class="sys-uptime">142ms latency</div>
-                            </div>
-                        </div>
-                        <div class="sys-item">
-                            <div class="sys-name"><span class="sys-icon">🤖</span> AI / NLP Engine</div>
-                            <div class="sys-info">
-                                <div class="sys-status ok">Online</div>
-                                <div class="sys-uptime">1.3s avg resp.</div>
-                            </div>
-                        </div>
-                        <div class="sys-item">
-                            <div class="sys-name"><span class="sys-icon">📧</span> Email Notifikasi</div>
-                            <div class="sys-info">
-                                <div class="sys-status ok">Online</div>
-                                <div class="sys-uptime">Queue: 0</div>
-                            </div>
-                        </div>
-                        <div class="sys-item">
-                            <div class="sys-name"><span class="sys-icon">💾</span> Disk Storage</div>
-                            <div class="sys-info">
-                                <div class="sys-status warn">68% Terpakai</div>
-                                <div class="sys-uptime">34.2 GB / 50 GB</div>
-                            </div>
-                        </div>
-                        <div class="sys-item">
-                            <div class="sys-name"><span class="sys-icon">🔒</span> SSL Certificate</div>
-                            <div class="sys-info">
-                                <div class="sys-status ok">Valid</div>
-                                <div class="sys-uptime">Exp: 12 Des 2026</div>
-                            </div>
-                        </div>
                     </div>
                 </div>
 

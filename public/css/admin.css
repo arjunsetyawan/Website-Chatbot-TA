@@ -204,39 +204,39 @@
   /* ── STAT CARDS ── */
   .stats-grid {
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 12px;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
     margin-bottom: 22px;
   }
   .stat-card {
     background: var(--card);
-    border-radius: 10px;
-    padding: 16px 18px;
+    border-radius: 12px;
+    padding: 22px 24px;
     border: 1px solid var(--border);
     transition: box-shadow .15s;
   }
-  .stat-card:hover { box-shadow: 0 2px 12px rgba(0,0,0,.06); }
-  .stat-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
-  .stat-label-top { font-size: 11px; font-weight: 600; color: var(--text-muted); }
+  .stat-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,.08); }
+  .stat-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+  .stat-label-top { font-size: 12px; font-weight: 600; color: var(--text-muted); }
   .stat-icon-sm {
-    width: 28px; height: 28px;
-    border-radius: 7px;
+    width: 34px; height: 34px;
+    border-radius: 9px;
     display: flex; align-items: center; justify-content: center;
-    font-size: 14px;
+    font-size: 16px;
     background: var(--bg);
   }
-  .stat-value { font-size: 26px; font-weight: 700; color: var(--text); line-height: 1; margin-bottom: 6px; font-variant-numeric: tabular-nums; }
+  .stat-value { font-size: 36px; font-weight: 700; color: var(--text); line-height: 1; margin-bottom: 10px; font-variant-numeric: tabular-nums; }
   .stat-footer { display: flex; align-items: center; gap: 5px; }
   .stat-delta {
-    font-size: 10.5px;
+    font-size: 11px;
     font-weight: 600;
-    padding: 2px 6px;
+    padding: 2px 7px;
     border-radius: 4px;
   }
   .delta-up { background: var(--success-bg); color: var(--success); }
   .delta-down { background: var(--danger-bg); color: var(--danger); }
   .delta-neutral { background: var(--border-light); color: var(--text-muted); }
-  .stat-footer-label { font-size: 10.5px; color: var(--text-light); }
+  .stat-footer-label { font-size: 11px; color: var(--text-light); }
 
   /* ── MAIN GRID ── */
   .main-grid {
@@ -479,7 +479,7 @@
   /* ── BOTTOM ROW ── */
   .bottom-row {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr;
     gap: 16px;
   }
 
