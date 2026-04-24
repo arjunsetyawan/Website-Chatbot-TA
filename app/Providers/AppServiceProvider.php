@@ -20,5 +20,11 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         //
+        if (!is_dir('/tmp/storage/framework/views')) {
+            mkdir('/tmp/storage/framework/views', 0755, true);
+        }
+        if (config('app.env') === 'production') {
+            config(['view.compiled' => '/tmp/storage/framework/views']);
+        }
     }
 }
