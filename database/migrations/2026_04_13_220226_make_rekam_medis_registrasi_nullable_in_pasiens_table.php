@@ -4,31 +4,22 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
+/**
+ * Migrasi ini awalnya dibuat untuk mengubah no_rekam_medis dan no_registrasi
+ * menjadi nullable. Perubahan tersebut telah diintegrasikan langsung ke migrasi
+ * create_pasiens_table, sehingga migrasi ini tidak perlu melakukan apa-apa.
+ * Dipertahankan agar catatan migrasi tetap konsisten.
+ */
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
-        Schema::table('pasiens', function (Blueprint $table) {
-            // Drop unique constraints first, then make nullable
-            $table->dropUnique(['no_rekam_medis']);
-            $table->dropUnique(['no_registrasi']);
-
-            $table->string('no_rekam_medis')->nullable()->change();
-            $table->string('no_registrasi')->nullable()->change();
-        });
+        // Sudah ditangani di 2025_01_01_000001_create_pasiens_table.php
+        // no_rekam_medis dan no_registrasi sudah nullable dari awal
     }
 
     public function down(): void
     {
-        Schema::table('pasiens', function (Blueprint $table) {
-            $table->string('no_rekam_medis')->nullable(false)->change();
-            $table->string('no_registrasi')->nullable(false)->change();
-
-            $table->unique('no_rekam_medis');
-            $table->unique('no_registrasi');
-        });
+        // Tidak ada yang perlu di-rollback
     }
 };

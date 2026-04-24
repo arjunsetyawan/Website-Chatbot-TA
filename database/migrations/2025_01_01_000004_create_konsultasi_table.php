@@ -8,20 +8,26 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::rename('konsultasis', 'konsultasi');
-
-        // Add jam_booking column for the specific slot time
-        Schema::table('konsultasi', function (Blueprint $table) {
-            $table->string('jam_booking', 10)->nullable()->after('jam_praktik');
+        Schema::create('konsultasi', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('pasien_id')->constrained('pasiens')->onDelete('cascade');
+            $table->date('tanggal_konsultasi');
+            $table->string('nama_dokter');
+            $table->string('poli');
+            $table->string('jam_praktik', 20);
+            $table->string('jam_booking', 10)->nullable();
+            $table->string('kode_layanan')->nullable();
+            $table->text('keluhan')->nullable();
+            $table->enum('status', ['menunggu', 'terkonfirmasi', 'dibatalkan', 'selesai', 'kadaluwarsa'])
+                  ->default('menunggu');
+            $table->text('catatan_admin')->nullable();
+            $table->timestamps();
         });
     }
 
     public function down(): void
     {
-        Schema::table('konsultasi', function (Blueprint $table) {
-            $table->dropColumn('jam_booking');
-        });
-
-        Schema::rename('konsultasi', 'konsultasis');
+        Schema::dropIfExists('konsultasi');
     }
 };

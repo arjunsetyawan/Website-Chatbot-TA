@@ -1,19 +1,23 @@
 <?php
 
 use Illuminate\Database\Migrations\Migration;
-use Illuminate\Support\Facades\DB;
 
+/**
+ * Migrasi ini awalnya dibuat untuk menambahkan nilai 'kadaluwarsa' ke ENUM status
+ * tabel konsultasi. Perubahan tersebut telah diintegrasikan langsung ke migrasi
+ * create_konsultasi_table (2025_01_01_000004), sehingga migrasi ini tidak perlu
+ * melakukan apa-apa. Dipertahankan agar catatan migrasi tetap konsisten.
+ */
 return new class extends Migration
 {
     public function up(): void
     {
-        // Tambah nilai 'kadaluwarsa' ke ENUM status di tabel konsultasi
-        DB::statement("ALTER TABLE konsultasi MODIFY COLUMN status ENUM('menunggu','terkonfirmasi','dibatalkan','selesai','kadaluwarsa') NOT NULL DEFAULT 'menunggu'");
+        // Sudah ditangani di 2025_01_01_000004_create_konsultasi_table.php
+        // Status 'kadaluwarsa' sudah ada dalam definisi ENUM dari awal
     }
 
     public function down(): void
     {
-        // Kembalikan ENUM tanpa 'kadaluwarsa' (pastikan tidak ada data kadaluwarsa sebelum rollback)
-        DB::statement("ALTER TABLE konsultasi MODIFY COLUMN status ENUM('menunggu','terkonfirmasi','dibatalkan','selesai') NOT NULL DEFAULT 'menunggu'");
+        // Tidak ada yang perlu di-rollback
     }
 };
