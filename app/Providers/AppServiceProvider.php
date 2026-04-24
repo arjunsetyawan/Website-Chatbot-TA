@@ -26,6 +26,7 @@ class AppServiceProvider extends ServiceProvider
         }
         if (config('app.env') === 'production') {
             config(['view.compiled' => '/tmp/storage/framework/views']);
+            \Illuminate\Support\Facades\URL::forceScheme('https');
         }
     }
 }
