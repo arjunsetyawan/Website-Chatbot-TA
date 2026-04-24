@@ -21,6 +21,17 @@ class DatabaseSeeder extends Seeder
             ]
         );
 
+        // Buat akun pasien demo
+        User::updateOrCreate(
+            ['email' => 'pasien@rsud-sultanfatah.com'],
+            [
+                'name'     => 'Pasien Demo',
+                'email'    => 'pasien@rsud-sultanfatah.com',
+                'password' => Hash::make('pasien12345'),
+                'role'     => 'pasien',
+            ]
+        );
+
         // Jalankan seeder data pasien (15 data Januari + akun user login)
         $this->call(PasienSeeder::class);
     }
