@@ -56,9 +56,9 @@
 
         <div class="sidebar-footer">
             <div class="user-card">
-                <div class="user-avatar">HS</div>
+                <div class="user-avatar">{{ strtoupper(substr(explode(' ', trim($user->name ?? 'P'))[0], 0, 1) . (isset(explode(' ', trim($user->name ?? ''))[1]) ? substr(explode(' ', trim($user->name ?? ''))[1], 0, 1) : '')) }}</div>
                 <div class="user-info">
-                    <div class="user-name">Harjuno Setyawan</div>
+                    <div class="user-name">{{ $user->name ?? 'Pasien' }}</div>
                     <div class="user-role">Pasien</div>
                 </div>
                 <span style="color:rgba(255,255,255,.3);font-size:14px;">⋮</span>
@@ -122,7 +122,6 @@
                 <div class="card">
                     <div class="card-header">
                         <div class="card-title"><span class="title-icon">⚡</span> Akses Cepat</div>
-                        <a href="{{ route('pasien.jadwal-dokter') }}" class="card-action" style="text-decoration:none;">Lihat semua →</a>
                     </div>
                     <div class="card-body">
                         <div class="quick-grid">

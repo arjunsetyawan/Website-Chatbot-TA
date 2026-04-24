@@ -173,15 +173,6 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="profil-sumrow">
-                                <span class="profil-sumrow-icon">🔑</span>
-                                <div class="profil-sumrow-info">
-                                    <div class="profil-sumrow-label">Role Akun</div>
-                                    <div class="profil-sumrow-val">
-                                        <span class="profil-sumrow-badge badge-pasien">Pasien</span>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>

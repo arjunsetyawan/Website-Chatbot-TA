@@ -232,6 +232,11 @@ class PasienController extends Controller
             // Buat pasien baru dan hubungkan ke user
             $pasien = \App\Models\Pasien::create($pasienData);
             $user->update(['pasien_id' => $pasien->id]);
+
+            // Backfill konsultasi yang sebelumnya dibuat saat pasien_id masih null
+            \App\Models\Konsultasi::where('user_id', $user->id)
+                ->whereNull('pasien_id')
+                ->update(['pasien_id' => $pasien->id]);
         }
 
         return redirect()->route('pasien.profil')
@@ -374,7 +379,7 @@ class PasienController extends Controller
 
         Konsultasi::create([
             'user_id'            => $user->id,
-            'pasien_id'          => $user->pasien_id,
+            'pasien_id'          => $user->pasien_id ?? null,
             'tanggal_konsultasi' => $request->tanggal_konsultasi,
             'nama_dokter'        => $request->nama_dokter,
             'poli'               => $request->poli ?? 'PARU',
