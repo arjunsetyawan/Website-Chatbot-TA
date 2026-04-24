@@ -7,7 +7,7 @@
     },
     "routes": [
         {
-            "src": "/(css|js|images|favicon.ico|build)/(.*)",
+            "src": "/(css|js|images|img|favicon.ico|build)/(.*)",
             "dest": "/public/$1/$2"
         },
         {
