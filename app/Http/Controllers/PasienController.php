@@ -171,6 +171,75 @@ class PasienController extends Controller
     }
 
     // ═══════════════════════════════════════════════════════════════
+    //   BOTPRESS PROXY  (bypasses browser CORS)
+    // ═══════════════════════════════════════════════════════════════
+    public function chatbotProxy(Request $request)
+    {
+        $request->validate([
+            'message' => 'required|string|max:2000',
+            'userId'  => 'required|string|max:100',
+        ]);
+
+        $payload = json_encode([
+            'userId'  => $request->userId,
+            'message' => $request->message,
+        ]);
+
+        // Use cURL directly to guarantee custom headers are sent
+        $ch = curl_init('https://api.botpress.cloud/v1/chat');
+        curl_setopt_array($ch, [
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_POST           => true,
+            CURLOPT_POSTFIELDS     => $payload,
+            CURLOPT_TIMEOUT        => 30,
+            CURLOPT_HTTPHEADER     => [
+                'Content-Type: application/json',
+                'Accept: application/json',
+                'Authorization: Bearer bp_pat_uJlLQ4kasjRVueAWt4kQlMidWXf8BfV1MwIj',
+                'x-client-id: 39e8fadd-f036-40aa-bc2e-7e5d1833586c',
+                'x-bot-id: f75a4ad0-ecfc-445c-a4d3-fef54b0b2a6c',
+            ],
+            CURLOPT_SSL_VERIFYPEER => true,
+        ]);
+
+        $body      = curl_exec($ch);
+        $httpCode  = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        $curlError = curl_error($ch);
+        curl_close($ch);
+
+        \Log::info('[BotpressProxy] status=' . $httpCode . ' body=' . $body . ' curl_err=' . $curlError);
+
+        if ($curlError) {
+            return response()->json(['error' => 'cURL error: ' . $curlError], 500);
+        }
+
+        $data = json_decode($body, true);
+
+        if ($httpCode !== 200) {
+            $errMsg = $data['message'] ?? $data['error'] ?? ('HTTP ' . $httpCode);
+            return response()->json(['error' => $errMsg], $httpCode ?: 500);
+        }
+
+        // Extract bot reply — handle various Botpress response shapes
+        $replies = $data['responses'] ?? $data['messages'] ?? $data['answers'] ?? [];
+        if (!empty($replies)) {
+            $texts = array_map(function ($r) {
+                return is_string($r) ? $r : ($r['text'] ?? $r['content'] ?? json_encode($r));
+            }, $replies);
+            $reply = implode("\n", $texts);
+        } else {
+            $reply = $data['text'] ?? $data['message'] ?? $data['reply'] ?? $data['answer'] ?? null;
+        }
+
+        if (!$reply) {
+            \Log::warning('[BotpressProxy] Cannot parse reply. Raw: ' . $body);
+            $reply = 'Maaf, saya tidak mendapat respons dari AI saat ini.';
+        }
+
+        return response()->json(['reply' => $reply, 'raw' => $data]);
+    }
+
+    // ═══════════════════════════════════════════════════════════════
     //   FAQ
     // ═══════════════════════════════════════════════════════════════
     public function faq()

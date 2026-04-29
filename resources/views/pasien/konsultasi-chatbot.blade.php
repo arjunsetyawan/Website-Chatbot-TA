@@ -6,16 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Konsultasi Chatbot AI – RSUD Sultan Fatah</title>
     <meta name="description" content="Konsultasi kesehatan paru-paru secara real-time menggunakan Chatbot AI RSUD Sultan Fatah.">
-    <link
-        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=DM+Serif+Display:ital@0;1&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/konsultasi-chatbot.css">
 </head>
 
 <body>
 
-    <!-- ══ SIDEBAR ══ -->
     <aside class="sidebar">
         <div class="sidebar-logo">
             <div class="logo-mark">
@@ -26,36 +23,19 @@
                 </div>
             </div>
         </div>
-
         <nav class="sidebar-nav">
             <div class="nav-section-label">Menu Utama</div>
-            <a class="nav-item" href="{{ route('pasien.dashboard') }}">
-                <span class="nav-icon">🏠</span> Dashboard
-            </a>
-            <a class="nav-item active" href="{{ route('pasien.konsultasi-chatbot') }}">
-                <span class="nav-icon">💬</span> Konsultasi Chatbot
-                <span class="nav-badge">AI</span>
-            </a>
-            <a class="nav-item" href="{{ route('pasien.jadwal-dokter') }}">
-                <span class="nav-icon">📅</span> Jadwal Dokter
-            </a>
-            <a class="nav-item" href="{{ route('pasien.booking.index') }}">
-                <span class="nav-icon">🗒️</span> Booking Konsultasi
-            </a>
-
+            <a class="nav-item" href="{{ route('pasien.dashboard') }}"><span class="nav-icon">🏠</span> Dashboard</a>
+            <a class="nav-item active" href="{{ route('pasien.konsultasi-chatbot') }}"><span class="nav-icon">💬</span> Konsultasi Chatbot<span class="nav-badge">AI</span></a>
+            <a class="nav-item" href="{{ route('pasien.jadwal-dokter') }}"><span class="nav-icon">📅</span> Jadwal Dokter</a>
+            <a class="nav-item" href="{{ route('pasien.booking.index') }}"><span class="nav-icon">🗒️</span> Booking Konsultasi</a>
             <div class="nav-section-label" style="margin-top:12px;">Informasi</div>
-            <a class="nav-item" href="{{ route('pasien.informasi-rs') }}">
-                <span class="nav-icon">ℹ️</span> Informasi Rumah Sakit
-            </a>
+            <a class="nav-item" href="{{ route('pasien.informasi-rs') }}"><span class="nav-icon">ℹ️</span> Informasi Rumah Sakit</a>
             <a class="nav-item" href="{{ route('pasien.faq') }}"><span class="nav-icon">❓</span> FAQ</a>
-
             <div class="nav-section-label" style="margin-top:12px;">Akun</div>
             <a class="nav-item" href="{{ route('pasien.profil') }}"><span class="nav-icon">👤</span> Profil</a>
-            <a class="nav-item" href="{{ route('logout.get') }}" style="color:rgba(239,68,68,.7);">
-                <span class="nav-icon">🚪</span> Keluar
-            </a>
+            <a class="nav-item" href="{{ route('logout.get') }}" style="color:rgba(239,68,68,.7);"><span class="nav-icon">🚪</span> Keluar</a>
         </nav>
-
         <div class="sidebar-footer">
             <div class="user-card">
                 <div class="user-avatar">{{ strtoupper(substr(auth()->user()->name ?? 'P', 0, 1)) }}{{ strtoupper(substr(explode(' ', auth()->user()->name ?? 'Pasien')[1] ?? '', 0, 1)) }}</div>
@@ -68,10 +48,7 @@
         </div>
     </aside>
 
-    <!-- ══ MAIN ══ -->
     <div class="main">
-
-        <!-- Topbar -->
         <header class="topbar">
             <div class="topbar-left">
                 <span class="page-title">Konsultasi Chatbot</span>
@@ -83,15 +60,12 @@
             </div>
         </header>
 
-        <!-- Content -->
         <div class="content">
 
-            <!-- Hero Banner -->
             <div class="chatbot-hero fade-up">
                 <div class="hero-content">
                     <h1>🤖 Chatbot AI Kesehatan Paru</h1>
-                    <p>Konsultasikan keluhan kesehatan paru-paru Anda secara langsung bersama asisten AI kami.
-                        Dapatkan informasi dan rekomendasi awal yang cepat dan akurat.</p>
+                    <p>Konsultasikan keluhan kesehatan paru-paru Anda secara langsung bersama asisten AI kami. Dapatkan informasi dan rekomendasi awal yang cepat dan akurat.</p>
                     <div class="hero-badges">
                         <span class="hero-badge">⚡ Respons Instan</span>
                         <span class="hero-badge">🔒 Privasi Terjaga</span>
@@ -101,13 +75,10 @@
                 </div>
                 <div class="hero-right">
                     <div class="hero-bot-icon">🤖</div>
-                    <div class="hero-status">
-                        <span class="dot"></span> Online & Siap Membantu
-                    </div>
+                    <div class="hero-status"><span class="dot"></span> Online &amp; Siap Membantu</div>
                 </div>
             </div>
 
-            <!-- Info Strips -->
             <div class="info-strips fade-up fade-up-d1">
                 <div class="info-strip">
                     <div class="strip-icon blue">💬</div>
@@ -132,38 +103,16 @@
                 </div>
             </div>
 
-            <!-- Main Chat Layout -->
             <div class="chatbot-layout fade-up fade-up-d2">
 
-                <!-- Typebot Embed -->
                 <div class="typebot-frame-card">
-                    <div class="typebot-frame-header">
-                        <div class="tfh-left">
-                            <div class="tfh-avatar">🤖</div>
-                            <div class="tfh-info">
-                                <div class="tfh-name">Asisten AI Paru – Sultan Fatah</div>
-                                <div class="tfh-sub">Powered by ChatGPT · RSUD Sultan Fatah</div>
-                            </div>
-                        </div>
-                        <div class="tfh-online">
-                            <span class="dot"></span> Online
-                        </div>
-                    </div>
-                    <div class="typebot-embed-wrapper">
-                        <!-- Loading state -->
-                        <div class="typebot-loading" id="typebotLoading">
-                            <div class="loading-spinner"></div>
-                            <div class="loading-text">Memuat chatbot AI...</div>
-                        </div>
-                        <!-- Typebot Standard Embed -->
-                        <typebot-standard style="width:100%;height:100%;"></typebot-standard>
-                    </div>
+                    <!-- Botpress Webchat inline container -->
+                    <!-- The embeddedChatId matches configuration in init script -->
+                    <div id="bp-embedded-webchat" class="bp-inline-container"></div>
                 </div>
 
-                <!-- Sidebar Panel -->
                 <div class="chatbot-sidebar-panel">
 
-                    <!-- User Context -->
                     <div class="user-context-card">
                         <div class="uc-title">👤 Sesi Aktif</div>
                         <div class="uc-user">
@@ -174,44 +123,27 @@
                             </div>
                         </div>
                         <hr class="uc-divider">
-                        <div class="uc-note">
-                            💡 Anda dapat berkonsultasi tentang gejala, menanyakan informasi penyakit paru, atau meminta rekomendasi tindakan.
-                        </div>
+                        <div class="uc-note">💡 Anda dapat berkonsultasi tentang gejala, menanyakan informasi penyakit paru, atau meminta rekomendasi tindakan.</div>
                     </div>
 
-                    <!-- Quick Topics -->
                     <div class="quick-topics-card">
                         <div class="qt-title">⚡ Topik Populer</div>
                         <div class="topic-item"><span class="topic-emoji">🫁</span> Gejala TBC Paru</div>
-                        <div class="topic-item"><span class="topic-emoji">😮‍💨</span> Sesak Napas & Penyebabnya</div>
-                        <div class="topic-item"><span class="topic-emoji">🤧</span> Batuk Kronis & Asma</div>
-                        <div class="topic-item"><span class="topic-emoji">💊</span> Obat & Pengobatan Paru</div>
+                        <div class="topic-item"><span class="topic-emoji">😮‍💨</span> Sesak Napas &amp; Penyebabnya</div>
+                        <div class="topic-item"><span class="topic-emoji">🤧</span> Batuk Kronis &amp; Asma</div>
+                        <div class="topic-item"><span class="topic-emoji">💊</span> Obat &amp; Pengobatan Paru</div>
                         <div class="topic-item"><span class="topic-emoji">🚭</span> Dampak Merokok pada Paru</div>
                         <div class="topic-item"><span class="topic-emoji">❤️</span> Saturasi Oksigen Normal</div>
                     </div>
 
-                    <!-- Tips -->
                     <div class="tips-card">
                         <div class="tips-title">💡 Tips Konsultasi</div>
-                        <div class="tip-item">
-                            <div class="tip-bullet">1</div>
-                            Deskripsikan gejala sejelas mungkin (kapan mulai, seberapa parah)
-                        </div>
-                        <div class="tip-item">
-                            <div class="tip-bullet">2</div>
-                            Sebutkan riwayat penyakit atau alergi yang dimiliki
-                        </div>
-                        <div class="tip-item">
-                            <div class="tip-bullet">3</div>
-                            Tanyakan satu topik per percakapan untuk hasil lebih akurat
-                        </div>
-                        <div class="tip-item">
-                            <div class="tip-bullet">4</div>
-                            Konsultasi chatbot bukan pengganti diagnosa dokter
-                        </div>
+                        <div class="tip-item"><div class="tip-bullet">1</div> Deskripsikan gejala sejelas mungkin (kapan mulai, seberapa parah)</div>
+                        <div class="tip-item"><div class="tip-bullet">2</div> Sebutkan riwayat penyakit atau alergi yang dimiliki</div>
+                        <div class="tip-item"><div class="tip-bullet">3</div> Tanyakan satu topik per percakapan untuk hasil lebih akurat</div>
+                        <div class="tip-item"><div class="tip-bullet">4</div> Konsultasi chatbot bukan pengganti diagnosa dokter</div>
                     </div>
 
-                    <!-- Booking CTA -->
                     <div class="booking-cta-card">
                         <div class="bca-icon">📅</div>
                         <div class="bca-title">Butuh Konsultasi Langsung?</div>
@@ -219,49 +151,78 @@
                         <a href="{{ route('pasien.booking.index') }}" class="bca-btn">🗓️ Booking Konsultasi</a>
                     </div>
 
-                </div><!-- /sidebar panel -->
-            </div><!-- /chatbot-layout -->
+                </div>
+            </div>
 
-            <!-- Footer Notice -->
             <div class="chatbot-footer-notice fade-up fade-up-d3">
                 <span class="fn-icon">⚠️</span>
                 <span><strong>Perhatian:</strong> Chatbot AI ini hanya memberikan informasi kesehatan umum dan bukan merupakan diagnosa medis resmi. Selalu konsultasikan keluhan serius Anda kepada dokter atau tenaga medis profesional di RSUD Sultan Fatah.</span>
             </div>
 
-        </div><!-- /content -->
-    </div><!-- /main -->
+        </div>
+    </div>
 
-    <!-- Typebot Embed Script -->
+    {{-- Botpress Webchat v3.6 inline embed --}}
+    <script src="https://cdn.botpress.cloud/webchat/v3.6/inject.js"></script>
     <script>
-        // Typebot init
-        const typebotInitScript = document.createElement("script");
-        typebotInitScript.type = "module";
-        typebotInitScript.innerHTML = `
-            import Typebot from 'https://cdn.jsdelivr.net/npm/@typebot.io/js@0/dist/web.js';
+    /* ── BOTPRESS WEBCHAT ── */
+    (function waitForBotpress() {
+        if (!window.botpress) {
+            return setTimeout(waitForBotpress, 100);
+        }
 
-            Typebot.initStandard({
-                typebot: "basic-chat-gpt-2udedxd",
-            });
+        window.botpress.init({
+            botId          : 'f75a4ad0-ecfc-445c-a4d3-fef54b0b2a6c',
+            clientId       : '39e8fadd-f036-40aa-bc2e-7e5d1833586c',
+            configuration  : {
+                version                    : 'v2',
+                botName                    : 'Asisten AI Paru – Sultan Fatah',
+                color                      : '#2d7dd2',
+                variant                    : 'solid',
+                headerVariant              : 'solid',
+                themeMode                  : 'light',
+                fontFamily                 : 'inter',
+                radius                     : 4,
+                feedbackEnabled            : false,
+                soundEnabled               : false,
+                showPoweredBy              : false,
+                footer                     : '',
+                storageLocation            : 'sessionStorage',
+                conversationHistory        : false,
+                proactiveMessageEnabled    : false,
+                /* Key: tells Botpress to render inside #bp-embedded-webchat */
+                embeddedChatId             : 'bp-embedded-webchat',
+            },
+        });
 
-            // Hide loading once typebot is ready
-            window.addEventListener('load', function() {
-                setTimeout(() => {
-                    const loader = document.getElementById('typebotLoading');
-                    if (loader) loader.classList.add('hidden');
-                }, 2000);
-            });
-        `;
-        document.body.append(typebotInitScript);
-
-        // Hide loader after 3s fallback
-        setTimeout(() => {
-            const loader = document.getElementById('typebotLoading');
-            if (loader) loader.classList.add('hidden');
-        }, 3000);
+        /* Open chat immediately and keep it open */
+        window.botpress.on('ready', function () {
+            window.botpress.open();
+        });
+        /* Fallback: if ready already fired */
+        setTimeout(function () {
+            try { window.botpress.open(); } catch(e) {}
+        }, 1500);
+    })();
     </script>
 
     <script>
-        // Live clock
+    /* ── Quick topic chips → send message into Botpress ── */
+    document.addEventListener('DOMContentLoaded', function () {
+        document.querySelectorAll('.topic-item').forEach(function (item) {
+            item.addEventListener('click', function () {
+                var text = item.textContent.trim().replace(/^\S+\s+/, '');
+                if (window.botpress) {
+                    try { window.botpress.open(); } catch (e) {}
+                    try { window.botpress.sendMessage({ type: 'text', text: text }); } catch (e) {}
+                }
+            });
+        });
+    });
+    </script>
+
+
+    <script>
         function updateClock() {
             const now = new Date();
             const days   = ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
@@ -273,25 +234,15 @@
         updateClock();
         setInterval(updateClock, 1000);
 
-        // Sync embed height to match sidebar panel
         function syncEmbedHeight() {
             const sidebar = document.querySelector('.chatbot-sidebar-panel');
             const frameCard = document.querySelector('.typebot-frame-card');
             if (!sidebar || !frameCard) return;
             const sidebarH = sidebar.getBoundingClientRect().height;
-            if (sidebarH > 0) {
-                frameCard.style.minHeight = sidebarH + 'px';
-            }
+            if (sidebarH > 0) frameCard.style.minHeight = sidebarH + 'px';
         }
-
-        // Run after content loads and on resize
-        window.addEventListener('load', () => {
-            setTimeout(syncEmbedHeight, 300);
-            setTimeout(syncEmbedHeight, 1500);
-        });
+        window.addEventListener('load', () => { setTimeout(syncEmbedHeight, 300); setTimeout(syncEmbedHeight, 1500); });
         window.addEventListener('resize', syncEmbedHeight);
-
-        // Watch sidebar for height changes
         if (window.ResizeObserver) {
             const ro = new ResizeObserver(syncEmbedHeight);
             document.addEventListener('DOMContentLoaded', () => {
@@ -302,5 +253,4 @@
     </script>
 
 </body>
-
 </html>
