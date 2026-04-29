@@ -6,13 +6,26 @@
     <title>Profil Saya – RSUD Sultan Fatah</title>
     <meta name="description" content="Kelola data profil pasien RSUD Sultan Fatah Demak.">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/css/style.css">
-    <link rel="stylesheet" href="/css/profil.css">
+    <link rel="stylesheet" href="/css/style.css?v=3">
+    <link rel="stylesheet" href="/css/profil.css?v=3">
+    <style>
+        @media (max-width: 1024px) {
+            .sidebar { transform: translateX(-100%) !important; transition: transform .3s ease !important; z-index: 200 !important; }
+            .sidebar.open { transform: translateX(0) !important; }
+            .main { margin-left: 0 !important; width: 100% !important; }
+            .hamburger-btn { display: flex !important; }
+            .topbar-left .breadcrumb { display: none !important; }
+            .time-chip { display: none !important; }
+        }
+    </style>
 </head>
 
 <body>
+    <!-- ══ SIDEBAR OVERLAY (Mobile) ══ -->
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+
     <!-- ══ SIDEBAR ══ -->
-    <aside class="sidebar">
+    <aside class="sidebar" id="sidebar">
         <div class="sidebar-logo">
             <div class="logo-mark">
                 <div class="logo-icon">🫁</div>
@@ -72,6 +85,9 @@
     <div class="main">
         <header class="topbar">
             <div class="topbar-left">
+                <button class="hamburger-btn" id="hamburgerBtn" onclick="toggleSidebar()" aria-label="Toggle menu">
+                    <span></span><span></span><span></span>
+                </button>
                 <span class="page-title">Profil</span>
                 <span class="breadcrumb" style="color:var(--border);margin:0 6px;">›</span>
                 <span class="breadcrumb">Data Diri Pasien</span>
@@ -284,6 +300,24 @@
     </div><!-- /main -->
 
     <script>
+        // Sidebar toggle (mobile)
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            const btn = document.getElementById('hamburgerBtn');
+            sidebar.classList.toggle('open');
+            overlay.classList.toggle('active');
+            btn.classList.toggle('open');
+        }
+        function closeSidebar() {
+            document.getElementById('sidebar').classList.remove('open');
+            document.getElementById('sidebarOverlay').classList.remove('active');
+            document.getElementById('hamburgerBtn').classList.remove('open');
+        }
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', () => { if(window.innerWidth <= 1024) closeSidebar(); });
+        });
+
         // Live clock
         function updateClock() {
             const now = new Date();

@@ -6,13 +6,26 @@
     <title>FAQ – RSUD Sultan Fatah</title>
     <meta name="description" content="Pertanyaan yang sering diajukan seputar layanan chatbot, jadwal dokter, dan booking konsultasi RSUD Sultan Fatah.">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/css/style.css">
-    <link rel="stylesheet" href="/css/faq.css">
+    <link rel="stylesheet" href="/css/style.css?v=3">
+    <link rel="stylesheet" href="/css/faq.css?v=5">
+    <style>
+        @media (max-width: 1024px) {
+            .sidebar { transform: translateX(-100%) !important; transition: transform .3s ease !important; z-index: 200 !important; }
+            .sidebar.open { transform: translateX(0) !important; }
+            .main { margin-left: 0 !important; width: 100% !important; }
+            .hamburger-btn { display: flex !important; }
+            .topbar-left .breadcrumb { display: none !important; }
+            .time-chip { display: none !important; }
+        }
+    </style>
 </head>
 
 <body>
-        <!-- ══ SIDEBAR ══ -->
-    <aside class="sidebar">
+        <!-- ══ SIDEBAR OVERLAY (Mobile) ══ -->
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+
+    <!-- ══ SIDEBAR ══ -->
+    <aside class="sidebar" id="sidebar">
         <div class="sidebar-logo">
             <div class="logo-mark">
                 <div class="logo-icon">🫁</div>
@@ -72,6 +85,9 @@
     <div class="main">
         <header class="topbar">
             <div class="topbar-left">
+                <button class="hamburger-btn" id="hamburgerBtn" onclick="toggleSidebar()" aria-label="Toggle menu">
+                    <span></span><span></span><span></span>
+                </button>
                 <span class="page-title">FAQ</span>
                 <span class="breadcrumb" style="color:var(--border);margin:0 6px;">›</span>
                 <span class="breadcrumb">Pertanyaan yang Sering Diajukan</span>
@@ -164,7 +180,7 @@
                     <div class="faq-a">
                         <div class="faq-a-inner">
                             Chatbot dapat memberikan informasi awal mengenai:
-                            <ul>
+                            <ol>
                                 <li>Asma</li>
                                 <li>Tuberkulosis (TB)</li>
                                 <li>Pneumonia</li>
@@ -172,7 +188,7 @@
                                 <li>PPOK (Penyakit Paru Obstruktif Kronik)</li>
                                 <li>Batuk kronis</li>
                                 <li>Sesak napas</li>
-                            </ul>
+                            </ol>
                         </div>
                     </div>
                 </div>
@@ -211,14 +227,14 @@
                     <div class="faq-a">
                         <div class="faq-a-inner">
                             Beberapa gejala yang umum perlu diwaspadai:
-                            <ul>
+                            <ol>
                                 <li>Batuk lebih dari 2 minggu</li>
                                 <li>Sesak napas</li>
                                 <li>Nyeri dada</li>
                                 <li>Napas berbunyi (mengi)</li>
                                 <li>Demam yang berlangsung lama</li>
                                 <li>Batuk berdahak atau berdarah</li>
-                            </ul>
+                            </ol>
                             <div class="faq-highlight">💡 Jika Anda mengalami gejala tersebut, sebaiknya segera berkonsultasi dengan dokter.</div>
                         </div>
                     </div>
@@ -241,7 +257,7 @@
                                 <li>Batuk darah dalam jumlah banyak</li>
                                 <li>Demam tinggi yang tidak turun</li>
                                 <li>Penurunan kesadaran</li>
-                            </ul>
+                            </ol>
                             <div class="faq-urgent">⚠️ Kondisi ini termasuk darurat medis ??? jangan ditunda!</div>
                         </div>
                     </div>
@@ -514,6 +530,24 @@
     </div><!-- /main -->
 
     <script>
+        // Sidebar toggle (mobile)
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            const btn = document.getElementById('hamburgerBtn');
+            sidebar.classList.toggle('open');
+            overlay.classList.toggle('active');
+            btn.classList.toggle('open');
+        }
+        function closeSidebar() {
+            document.getElementById('sidebar').classList.remove('open');
+            document.getElementById('sidebarOverlay').classList.remove('active');
+            document.getElementById('hamburgerBtn').classList.remove('open');
+        }
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', () => { if(window.innerWidth <= 1024) closeSidebar(); });
+        });
+
         // Live clock
         function updateClock() {
             const now = new Date();

@@ -533,3 +533,14 @@
     overflow: hidden !important;
 }
 
+/* Mobile Responsive */
+@media (max-width: 1024px) {
+    .chatbot-hero { flex-direction: column; text-align: center; padding: 24px 20px; gap: 20px; }
+    .chatbot-hero::before, .chatbot-hero::after { display: none; }
+    .hero-content p { max-width: 100%; }
+    .hero-badges { justify-content: center; }
+    .info-strips { grid-template-columns: 1fr; gap: 12px; }
+    .chatbot-layout { grid-template-columns: 1fr; }
+    .typebot-frame-card { height: 500px; }
+}
+
