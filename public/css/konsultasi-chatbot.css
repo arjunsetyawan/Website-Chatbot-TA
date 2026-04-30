@@ -540,7 +540,12 @@
     .hero-content p { max-width: 100%; }
     .hero-badges { justify-content: center; }
     .info-strips { grid-template-columns: 1fr; gap: 12px; }
-    .chatbot-layout { grid-template-columns: 1fr; }
-    .typebot-frame-card { height: 500px; }
+    
+    .chatbot-layout { display: flex; flex-direction: column; gap: 16px; }
+    .chatbot-sidebar-panel { display: contents; }
+    .tips-card { order: -1; }
+    .typebot-frame-card { height: 420px; order: 0; }
+    .user-context-card { order: 1; }
+    .quick-topics-card { order: 2; }
+    .booking-cta-card { order: 3; }
 }
-

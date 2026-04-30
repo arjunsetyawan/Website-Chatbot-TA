@@ -269,9 +269,14 @@
         setInterval(updateClock, 1000);
 
         function syncEmbedHeight() {
-            const sidebar = document.querySelector('.chatbot-sidebar-panel');
             const frameCard = document.querySelector('.typebot-frame-card');
-            if (!sidebar || !frameCard) return;
+            if (!frameCard) return;
+            if (window.innerWidth <= 1024) {
+                frameCard.style.minHeight = '';
+                return;
+            }
+            const sidebar = document.querySelector('.chatbot-sidebar-panel');
+            if (!sidebar) return;
             const sidebarH = sidebar.getBoundingClientRect().height;
             if (sidebarH > 0) frameCard.style.minHeight = sidebarH + 'px';
         }
