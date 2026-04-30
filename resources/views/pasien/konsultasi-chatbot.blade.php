@@ -144,12 +144,12 @@
 
                     <div class="quick-topics-card">
                         <div class="qt-title">⚡ Topik Populer</div>
-                        <div class="topic-item"><span class="topic-emoji">🫁</span> Gejala TBC Paru</div>
-                        <div class="topic-item"><span class="topic-emoji">😮‍💨</span> Sesak Napas &amp; Penyebabnya</div>
-                        <div class="topic-item"><span class="topic-emoji">🤧</span> Batuk Kronis &amp; Asma</div>
-                        <div class="topic-item"><span class="topic-emoji">💊</span> Obat &amp; Pengobatan Paru</div>
-                        <div class="topic-item"><span class="topic-emoji">🚭</span> Dampak Merokok pada Paru</div>
-                        <div class="topic-item"><span class="topic-emoji">❤️</span> Saturasi Oksigen Normal</div>
+                        <div class="topic-item"><span class="topic-emoji">🤧</span> Batuk</div>
+                        <div class="topic-item"><span class="topic-emoji">🫀</span> Nyeri Dada</div>
+                        <div class="topic-item"><span class="topic-emoji">😮‍💨</span> Sesak Nafas</div>
+                        <div class="topic-item"><span class="topic-emoji">🦠</span> Infeksi Paru-Paru</div>
+                        <div class="topic-item"><span class="topic-emoji">🩸</span> Batuk Berdarah</div>
+                        <div class="topic-item"><span class="topic-emoji">🫁</span> Iritasi Saluran Pernafasan</div>
                     </div>
 
                     <div class="tips-card">
@@ -222,20 +222,7 @@
     })();
     </script>
 
-    <script>
-    /* ── Quick topic chips → send message into Botpress ── */
-    document.addEventListener('DOMContentLoaded', function () {
-        document.querySelectorAll('.topic-item').forEach(function (item) {
-            item.addEventListener('click', function () {
-                var text = item.textContent.trim().replace(/^\S+\s+/, '');
-                if (window.botpress) {
-                    try { window.botpress.open(); } catch (e) {}
-                    try { window.botpress.sendMessage({ type: 'text', text: text }); } catch (e) {}
-                }
-            });
-        });
-    });
-    </script>
+
 
 
     <script>
